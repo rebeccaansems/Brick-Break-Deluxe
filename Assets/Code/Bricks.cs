@@ -5,8 +5,6 @@ using UnityEngine;
 public class Bricks : MonoBehaviour
 {
 
-    int counter = 0;
-
     // Use this for initialization
     void Start()
     {
@@ -28,7 +26,14 @@ public class Bricks : MonoBehaviour
     {
         if (collision.collider.tag == "Player")
         {
-            Destroy(this.gameObject);
+            StartCoroutine(DestroyBrick());
         }
+    }
+
+    IEnumerator DestroyBrick()
+    {
+        yield return new WaitForSeconds(Random.Range(0.01f, 1.0f));
+        Destroy(this.gameObject);
+        yield break;
     }
 }
