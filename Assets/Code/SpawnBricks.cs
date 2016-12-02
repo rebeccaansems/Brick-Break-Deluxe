@@ -32,9 +32,13 @@ public class SpawnBricks : MonoBehaviour
                 rowNumber++;
             }
 
-            GameObject newBrick = Instantiate(brick);
-            newBrick.transform.position = new Vector3(currentX, currentY);
-            newBrick.GetComponent<SpriteRenderer>().sprite = brickColors[Random.Range(0, 5)];
+            if(Random.Range(0,10) < 9)
+            {
+                GameObject newBrick = Instantiate(brick);
+                newBrick.transform.position = new Vector3(currentX, currentY);
+                newBrick.GetComponent<SpriteRenderer>().sprite = brickColors[Random.Range(0, 5)];
+                newBrick.transform.parent = this.transform;
+            }
 
             brickCounter++;
         }
