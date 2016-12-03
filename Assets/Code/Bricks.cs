@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bricks : MonoBehaviour
 {
+    public ParticleSystem particles;
 
     // Use this for initialization
     void Start()
@@ -19,7 +20,7 @@ public class Bricks : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Destroy(this.gameObject);
+        StartCoroutine(DestroyBrick());
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -33,6 +34,10 @@ public class Bricks : MonoBehaviour
     IEnumerator DestroyBrick()
     {
         yield return new WaitForSeconds(Random.Range(0.01f, 1.0f));
+        particles.Play();
+        Destroy(this.gameObject.GetComponent<SpriteRenderer>());
+        Destroy(this.gameObject.GetComponent<BoxCollider2D>());
+        yield return new WaitForSeconds(0.15f);
         Destroy(this.gameObject);
         yield break;
     }

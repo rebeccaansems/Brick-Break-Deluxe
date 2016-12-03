@@ -7,6 +7,7 @@ public class SpawnBricks : MonoBehaviour
 
     public GameObject brick;
     public Sprite[] brickColors;
+    public Material[] brickColorsMat;
 
     // Use this for initialization
     void Start()
@@ -34,9 +35,11 @@ public class SpawnBricks : MonoBehaviour
 
             if(Random.Range(0,10) < 9)
             {
+                int brickColorChosen = Random.Range(0, 5);
                 GameObject newBrick = Instantiate(brick);
                 newBrick.transform.position = new Vector3(currentX, currentY);
-                newBrick.GetComponent<SpriteRenderer>().sprite = brickColors[Random.Range(0, 5)];
+                newBrick.GetComponent<SpriteRenderer>().sprite = brickColors[brickColorChosen];
+                newBrick.GetComponentInChildren<ParticleSystemRenderer>().material = brickColorsMat[brickColorChosen];
                 newBrick.transform.parent = this.transform;
             }
 
