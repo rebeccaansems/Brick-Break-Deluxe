@@ -50,6 +50,7 @@ public class SpawnBricks : MonoBehaviour
                 int brickColorChosen = Random.Range(0, 5);
                 GameObject newBrick = Instantiate(brick);
                 newBrick.transform.position = new Vector3(currentX, currentY);
+                newBrick.GetComponent<Bricks>().color = brickColorChosen;
                 newBrick.GetComponent<SpriteRenderer>().sprite = brickColors[brickColorChosen];
                 newBrick.GetComponentInChildren<ParticleSystemRenderer>().material = brickColorsMat[brickColorChosen];
                 newBrick.transform.parent = this.transform;

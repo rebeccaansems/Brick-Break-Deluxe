@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bricks : MonoBehaviour
 {
     public ParticleSystem particles;
+    public int color;
 
     private bool collidedWithPlayer = false, wasVisible = false;
 
@@ -20,17 +21,13 @@ public class Bricks : MonoBehaviour
 
     }
 
-    private void OnMouseDown()
-    {
-        StartCoroutine(DestroyBrick());
-    }
-
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.collider.tag == "Player")
+        if (collision.collider.tag == "Player" && collidedWithPlayer == false)
         {
             collidedWithPlayer = true;
-            StartCoroutine(DestroyBrick());
+            CheckBricksAround();
+            DestroyBrick();
         }
     }
 
@@ -42,15 +39,37 @@ public class Bricks : MonoBehaviour
     private void OnBecameInvisible()
     {
         //destroy brick because it went off screen but is not currently doing the DestroyBrick IEnumerator
-        if (collidedWithPlayer == false && wasVisible == true)
+        if (collidedWithPlayer == false && wasVisible == true && particles.isPlaying == false)
         {
             Destroy(this.gameObject);
         }
     }
 
-    IEnumerator DestroyBrick()
+    public void CheckBricksAround()
     {
-        yield return new WaitForSeconds(Random.Range(0.01f, 1.0f));
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x, this.transform.position.y), 1);
+        int i = 0;
+        while (i < hitColliders.Length)
+        {
+            if (hitColliders[i].tag == "Brick")
+            {
+                if (hitColliders[i].GetComponent<Bricks>().color == this.color)
+                {
+                    hitColliders[i].gameObject.GetComponent<Bricks>().DestroyBrick();
+                }
+            }
+            i++;
+        }
+    }
+
+    public void DestroyBrick()
+    {
+        StartCoroutine(DestroyBrickTimer());
+    }
+
+    IEnumerator DestroyBrickTimer()
+    {
+        yield return new WaitForSeconds(0.1f);
         particles.Play();
         Destroy(this.gameObject.GetComponent<SpriteRenderer>());
         Destroy(this.gameObject.GetComponent<BoxCollider2D>());
