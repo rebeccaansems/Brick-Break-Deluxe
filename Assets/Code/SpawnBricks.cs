@@ -9,10 +9,22 @@ public class SpawnBricks : MonoBehaviour
     public Sprite[] brickColors;
     public Material[] brickColorsMat;
 
+    private float currentX = -1.8f, currentY = 2;
+
     // Use this for initialization
     void Start()
     {
-        float currentX = -1.8f, currentY = 2;
+        SpawnBrick();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    public void SpawnBrick()
+    {
         int brickCounter = 0, rowNumber = 1;
 
         for (int i = 1; i < 60; i++)
@@ -33,7 +45,7 @@ public class SpawnBricks : MonoBehaviour
                 rowNumber++;
             }
 
-            if(Random.Range(0,10) < 9)
+            if (Random.Range(0, 10) < 9)
             {
                 int brickColorChosen = Random.Range(0, 5);
                 GameObject newBrick = Instantiate(brick);
@@ -45,11 +57,5 @@ public class SpawnBricks : MonoBehaviour
 
             brickCounter++;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

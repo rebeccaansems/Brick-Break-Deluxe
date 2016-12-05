@@ -6,6 +6,8 @@ public class Bricks : MonoBehaviour
 {
     public ParticleSystem particles;
 
+    private bool collidedWithPlayer = false, wasVisible = false;
+
     // Use this for initialization
     void Start()
     {
@@ -27,7 +29,22 @@ public class Bricks : MonoBehaviour
     {
         if (collision.collider.tag == "Player")
         {
+            collidedWithPlayer = true;
             StartCoroutine(DestroyBrick());
+        }
+    }
+
+    private void OnBecameVisible()
+    {
+        wasVisible = true;
+    }
+
+    private void OnBecameInvisible()
+    {
+        //destroy brick because it went off screen but is not currently doing the DestroyBrick IEnumerator
+        if (collidedWithPlayer == false && wasVisible == true)
+        {
+            Destroy(this.gameObject);
         }
     }
 
