@@ -4,59 +4,71 @@ using UnityEngine;
 
 public class SpawnBricks : MonoBehaviour
 {
-
-    public GameObject brick;
-    public Sprite[] brickColors;
+    public GameObject brick, wind;
+    public Sprite[] brickColorsRect, brickColorsSquare;
     public Material[] brickColorsMat;
 
     private float currentX = -1.8f, currentY = 2;
 
-    // Use this for initialization
-    void Start()
+    private void Start()
     {
         SpawnBrick();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void SpawnBrick()
     {
         int brickCounter = 0, rowNumber = 1;
+        int brickType = Random.Range(0, 20);
 
         for (int i = 1; i < 60; i++)
         {
-            currentX += 1.2f;
-            if (brickCounter % 4 == 0 && rowNumber % 2 == 0)
-            {
-                currentY -= 0.7f;
-                currentX = -1.2f;
-                brickCounter = 0;
-                rowNumber++;
-            }
-            else if (brickCounter % 3 == 0 && rowNumber % 2 != 0)
-            {
-                currentY -= 0.7f;
-                currentX = -1.8f;
-                brickCounter = 0;
-                rowNumber++;
-            }
 
-            if (Random.Range(0, 10) < 9)
+            if (brickType < 19)//normal brick
             {
+                currentX += 1.2f;
+                if (brickCounter % 4 == 0 && rowNumber % 2 == 0)
+                {
+                    currentY -= 0.7f;
+                    currentX = -1.2f;
+                    brickCounter = 0;
+                    brickType = Random.Range(0, 20);
+                    rowNumber++;
+                }
+                else if (brickCounter % 3 == 0 && rowNumber % 2 != 0)
+                {
+                    currentY -= 0.7f;
+                    currentX = -1.8f;
+                    brickCounter = 0;
+                    brickType = Random.Range(0, 20);
+                    rowNumber++;
+                }
+
+                if (Random.Range(0, 10) < 9)
+                {
+                    int brickColorChosen = Random.Range(0, 5);
+                    GameObject newBrick = Instantiate(brick);
+                    newBrick.transform.position = new Vector2(currentX, currentY);
+                    newBrick.GetComponent<Bricks>().color = brickColorChosen;
+                    newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRect[brickColorChosen];
+                    newBrick.GetComponentInChildren<ParticleSystemRenderer>().material = brickColorsMat[brickColorChosen];
+                    newBrick.transform.parent = this.transform;
+                }
+                brickCounter++;
+            }
+            else//fan
+            {
+                currentY -= 0.7f;
                 int brickColorChosen = Random.Range(0, 5);
-                GameObject newBrick = Instantiate(brick);
-                newBrick.transform.position = new Vector3(currentX, currentY);
-                newBrick.GetComponent<Bricks>().color = brickColorChosen;
-                newBrick.GetComponent<SpriteRenderer>().sprite = brickColors[brickColorChosen];
-                newBrick.GetComponentInChildren<ParticleSystemRenderer>().material = brickColorsMat[brickColorChosen];
-                newBrick.transform.parent = this.transform;
-            }
 
-            brickCounter++;
+                GameObject newWind = Instantiate(wind);
+                newWind.transform.position = new Vector2(2.85f, currentY);
+                newWind.GetComponent<SpriteRenderer>().sprite = brickColorsSquare[brickColorChosen];
+                newWind.GetComponentInChildren<ParticleSystemRenderer>().material = brickColorsMat[brickColorChosen];
+                newWind.transform.parent = this.transform;
+                currentY -= 0.7f;
+
+                brickType = Random.Range(0, 20);
+            }
         }
     }
 }
