@@ -69,7 +69,7 @@ public class Bricks : MonoBehaviour
 
     IEnumerator DestroyBrickTimer()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.05f);
         particles.Play();
         Destroy(this.gameObject.GetComponent<SpriteRenderer>());
         Destroy(this.gameObject.GetComponent<BoxCollider2D>());
