@@ -15,11 +15,11 @@ public class Wind : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         direction = Random.Range(-1, 1);
         if (direction == 0)
         {
             direction = 1;
-            this.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
         else
         {
@@ -33,7 +33,7 @@ public class Wind : MonoBehaviour
     {
         if (playerInWindTunnel == true)
         {
-            player.GetComponent<Rigidbody2D>().AddForce(transform.right * direction * speed);
+            player.GetComponent<Rigidbody2D>().AddForce(new Vector2(-direction * speed,0), ForceMode2D.Impulse);
         }
     }
 
