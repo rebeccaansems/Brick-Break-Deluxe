@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bricks : MonoBehaviour
+public class BombBrick : MonoBehaviour
 {
     public ParticleSystem particles;
     public int color;
@@ -26,7 +26,7 @@ public class Bricks : MonoBehaviour
         if (collision.collider.tag == "Player" && collidedWithPlayer == false)
         {
             collidedWithPlayer = true;
-            CheckBricksAround();
+            DestroySurroundingBricks();
             DestroyBrick(true);
         }
     }
@@ -45,25 +45,23 @@ public class Bricks : MonoBehaviour
         }
     }
 
-    public void CheckBricksAround()
+    public void DestroySurroundingBricks()
     {
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x, this.transform.position.y), 1);
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x, this.transform.position.y), 2);
         int i = 0;
         while (i < hitColliders.Length)
         {
             if (hitColliders[i].tag == "Brick")
             {
-                if (hitColliders[i].GetComponent<Bricks>() != null)
+                if (hitColliders[i].gameObject.GetComponent<Bricks>() != null)
                 {
-                    if (hitColliders[i].GetComponent<Bricks>().color == this.color)
-                    {
-                        hitColliders[i].gameObject.GetComponent<Bricks>().DestroyBrick(true);
-                    }
+                    hitColliders[i].gameObject.GetComponent<Bricks>().DestroyBrick(true);
                 }
-                else if (hitColliders[i].GetComponent<BombBrick>().color == this.color)
+                else if (hitColliders[i].gameObject.GetComponent<BombBrick>() != null)
                 {
                     hitColliders[i].gameObject.GetComponent<BombBrick>().DestroyBrick(true);
                 }
+
             }
             i++;
         }
@@ -85,3 +83,4 @@ public class Bricks : MonoBehaviour
         yield break;
     }
 }
+

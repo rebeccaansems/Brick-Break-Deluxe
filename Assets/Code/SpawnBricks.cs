@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SpawnBricks : MonoBehaviour
 {
-    public GameObject brick, wind;
-    public Sprite[] brickColorsRect, brickColorsSquare;
+    public GameObject brick, brickSpecial, wind;
+    public Sprite[] brickColorsRect, brickColorsRectSpecial1, brickColorsSquare;
     public Material[] brickColorsMat;
 
     private float currentX = -1.8f, currentY = 2;
@@ -29,12 +29,12 @@ public class SpawnBricks : MonoBehaviour
                 if (brickCounter % 4 == 0 && rowNumber % 2 == 0)
                 {
                     currentY -= 0.7f;
-                    currentX = -1.2f;
+                    currentX = -2.4f;
                     brickCounter = 0;
                     brickType = Random.Range(0, 20);
                     rowNumber++;
                 }
-                else if (brickCounter % 3 == 0 && rowNumber % 2 != 0)
+                else if (brickCounter % 5 == 0 && rowNumber % 2 != 0)
                 {
                     currentY -= 0.7f;
                     currentX = -1.8f;
@@ -46,10 +46,22 @@ public class SpawnBricks : MonoBehaviour
                 if (Random.Range(0, 10) < 9)
                 {
                     int brickColorChosen = Random.Range(0, 5);
-                    GameObject newBrick = Instantiate(brick);
+                    GameObject newBrick;
+
+                    if (Random.Range(0, 100) > 98)//Bomb Bricks
+                    {
+                        newBrick = Instantiate(brickSpecial);
+                        newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRectSpecial1[brickColorChosen];
+                        newBrick.GetComponent<BombBrick>().color = brickColorChosen;
+                    }
+                    else
+                    {
+                        newBrick = Instantiate(brick);
+                        newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRect[brickColorChosen];
+                        newBrick.GetComponent<Bricks>().color = brickColorChosen;
+                    }
+
                     newBrick.transform.position = new Vector2(currentX, currentY);
-                    newBrick.GetComponent<Bricks>().color = brickColorChosen;
-                    newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRect[brickColorChosen];
                     newBrick.GetComponentInChildren<ParticleSystemRenderer>().material = brickColorsMat[brickColorChosen];
                     newBrick.transform.parent = this.transform;
                 }
