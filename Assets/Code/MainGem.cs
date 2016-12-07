@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainGem : MonoBehaviour
@@ -17,6 +18,10 @@ public class MainGem : MonoBehaviour
     void Update()
     {
         score.text = "Score: " + (3+(int)this.transform.position.y*(-1));
+        if(this.transform.position.x > 3.6 || this.transform.position.x < -3.6)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 
 }
