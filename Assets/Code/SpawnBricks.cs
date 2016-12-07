@@ -18,12 +18,12 @@ public class SpawnBricks : MonoBehaviour
     public void SpawnBrick()
     {
         int brickCounter = 0, rowNumber = 1;
-        int brickType = Random.Range(0, 20);
+        int brickType = Random.Range(0, 30);
 
         for (int i = 1; i < 60; i++)
         {
 
-            if (brickType < 19)//normal brick
+            if (brickType < 29)//normal brick
             {
                 currentX += 1.2f;
                 if (brickCounter % 4 == 0 && rowNumber % 2 == 0)

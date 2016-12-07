@@ -18,7 +18,6 @@ public class MainGem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        score.text = "Score: " + (3+(int)this.transform.position.y*(-1));
         if(this.transform.position.x > 3.6 || this.transform.position.x < -3.6)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -27,7 +26,9 @@ public class MainGem : MonoBehaviour
 
     private void FixedUpdate()
     {
-        this.GetComponent<Rigidbody2D>().AddForce(new Vector2(Input.acceleration.x * speed,0));
+        score.text = "Score: " + (3+(int)this.transform.position.y*(-1));
+
+        this.GetComponent<Rigidbody2D>().AddForce(new Vector2(Input.acceleration.x * speed, 0));
     }
 
 }
