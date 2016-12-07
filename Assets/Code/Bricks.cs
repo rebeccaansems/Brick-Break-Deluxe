@@ -27,7 +27,7 @@ public class Bricks : MonoBehaviour
         {
             collidedWithPlayer = true;
             CheckBricksAround();
-            DestroyBrick();
+            DestroyBrick(true);
         }
     }
 
@@ -55,19 +55,19 @@ public class Bricks : MonoBehaviour
             {
                 if (hitColliders[i].GetComponent<Bricks>().color == this.color)
                 {
-                    hitColliders[i].gameObject.GetComponent<Bricks>().DestroyBrick();
+                    hitColliders[i].gameObject.GetComponent<Bricks>().DestroyBrick(true);
                 }
             }
             i++;
         }
     }
-
-    public void DestroyBrick()
+    
+    public void DestroyBrick(bool starterTimer)
     {
-        StartCoroutine(DestroyBrickTimer());
+        StartCoroutine(DestroyBrickTimer(starterTimer));
     }
 
-    IEnumerator DestroyBrickTimer()
+    IEnumerator DestroyBrickTimer(bool starterTimer)
     {
         yield return new WaitForSeconds(0.05f);
         particles.Play();

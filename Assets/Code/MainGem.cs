@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class MainGem : MonoBehaviour
 {
     public Text score;
+    public float speed;
 
     // Use this for initialization
     void Start()
@@ -22,6 +23,11 @@ public class MainGem : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+    }
+
+    private void FixedUpdate()
+    {
+        this.GetComponent<Rigidbody2D>().AddForce(new Vector2(Input.acceleration.x * speed,0));
     }
 
 }
