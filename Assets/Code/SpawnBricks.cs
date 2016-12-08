@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpawnBricks : MonoBehaviour
 {
-    public GameObject brick, brickSpecial, wind;
+    public GameObject brick, wind;
     public Sprite[] brickColorsRect, brickColorsRectSpecial1, brickColorsRectSpecial2, brickColorsRectSpecial3, brickColorsSquare;
     public Material[] brickColorsMat;
 
@@ -56,7 +56,7 @@ public class SpawnBricks : MonoBehaviour
                 if (Random.Range(0, 10) < 9)
                 {
                     int brickColorChosen = Random.Range(0, 5);
-                    int brickType = Random.Range(0, 100);
+                    int brickType = Random.Range(0, 1000);
 
                     GameObject newBrick = Instantiate(brick);
 
@@ -65,17 +65,17 @@ public class SpawnBricks : MonoBehaviour
                     newBrick.GetComponentInChildren<ParticleSystemRenderer>().material = brickColorsMat[brickColorChosen];
                     newBrick.transform.parent = this.transform;
 
-                    if (brickType > 97)//Bomb Bricks ~ 2% chance
+                    if (brickType < 10)//Bomb Bricks ~ 1% chance
                     {
                         newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRectSpecial1[brickColorChosen];
                         newBrick.GetComponent<Bricks>().brickType = 1;
                     }
-                    else if (brickType > 94)//Speed Brick ~ 3% chance
+                    else if (brickType < 12)//Speed Brick ~ 0.2% chance
                     {
                         newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRectSpecial2[brickColorChosen];
                         newBrick.GetComponent<Bricks>().brickType = 2;
                     }
-                    else if (brickType > 91)//Slow Mo Bricks ~ 3% chance
+                    else if (brickType < 15)//Slow Mo Bricks ~ 0.3% chance
                     {
                         newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRectSpecial3[brickColorChosen];
                         newBrick.GetComponent<Bricks>().brickType = 3;
