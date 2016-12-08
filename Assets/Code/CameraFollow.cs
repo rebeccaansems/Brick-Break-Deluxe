@@ -19,10 +19,5 @@ public class CameraFollow : MonoBehaviour
         {
             this.transform.position = new Vector3(this.transform.position.x, player.transform.position.y - 1, -10);
         }
-
-        if (System.Math.Round(player.transform.position.y, 2) % 2 == 0)
-        {
-            spawnBricks.GetComponent<SpawnBricks>().SpawnBrick();
-        }
     }
 }

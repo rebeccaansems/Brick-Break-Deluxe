@@ -13,6 +13,16 @@ public class SpawnBricks : MonoBehaviour
     private void Start()
     {
         SpawnBrick();
+        StartCoroutine(BrickSpawnTimer());
+    }
+
+    IEnumerator BrickSpawnTimer()
+    {
+        while (true)
+        {
+            SpawnBrick();
+            yield return new WaitForSeconds(4);
+        }
     }
 
     public void SpawnBrick()
@@ -60,7 +70,7 @@ public class SpawnBricks : MonoBehaviour
                         newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRectSpecial1[brickColorChosen];
                         newBrick.GetComponent<Bricks>().brickType = 1;
                     }
-                    else if (brickType > 50)//Speed Brick ~ 3% chance
+                    else if (brickType > 94)//Speed Brick ~ 3% chance
                     {
                         newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRectSpecial2[brickColorChosen];
                         newBrick.GetComponent<Bricks>().brickType = 2;

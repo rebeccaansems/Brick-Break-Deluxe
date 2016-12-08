@@ -15,7 +15,8 @@ public class Player : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        gravityOriginal = Physics.gravity;
+        gravityOriginal = new Vector3(0, -9.81f, 0);
+        Physics2D.gravity = gravityOriginal;
     }
 
     // Update is called once per frame
@@ -44,7 +45,7 @@ public class Player : MonoBehaviour
 
     IEnumerator SpeedBrickTimer()
     {
-        yield return new WaitForSeconds(30);
+        yield return new WaitForSeconds(15);
         speedBrickEffect = false;
         Physics2D.gravity = gravityOriginal;
     }
