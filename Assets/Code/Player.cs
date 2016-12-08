@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public Text score;
     public float speed, gravityModifier;
     public bool speedBrickEffect = false;
+    public ParticleSystem particles;
 
     private Vector3 gravityOriginal;
 
@@ -33,11 +34,16 @@ public class Player : MonoBehaviour
         score.text = "Score: " + (3 + (int)this.transform.position.y * (-1));
 
         this.GetComponent<Rigidbody2D>().AddForce(new Vector2(Input.acceleration.x * speed, 0));
+        particles.gameObject.transform.position = this.transform.position;
     }
 
     public void SpeedBrickModeEnabled()
     {
         speedBrickEffect = true;
+        if(particles.isPlaying == false)
+        {
+            particles.Play();
+        }
         Physics2D.gravity = Physics2D.gravity * gravityModifier;
         StopCoroutine(SpeedBrickTimer());
         StartCoroutine(SpeedBrickTimer());
@@ -48,6 +54,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(15);
         speedBrickEffect = false;
         Physics2D.gravity = gravityOriginal;
+        particles.Stop();
     }
 
 }
