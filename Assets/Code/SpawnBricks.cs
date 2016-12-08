@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnBricks : MonoBehaviour
 {
     public GameObject brick, brickSpecial, wind;
-    public Sprite[] brickColorsRect, brickColorsRectSpecial1, brickColorsSquare;
+    public Sprite[] brickColorsRect, brickColorsRectSpecial1, brickColorsRectSpecial2, brickColorsRectSpecial3, brickColorsSquare;
     public Material[] brickColorsMat;
 
     private float currentX = -1.8f, currentY = 2;
@@ -18,12 +18,12 @@ public class SpawnBricks : MonoBehaviour
     public void SpawnBrick()
     {
         int brickCounter = 0, rowNumber = 1;
-        int brickType = Random.Range(0, 30);
+        int brickOrOther = Random.Range(0, 100);
 
         for (int i = 1; i < 60; i++)
         {
 
-            if (brickType < 29)//normal brick
+            if (brickOrOther < 70)//normal brick
             {
                 currentX += 1.2f;
                 if (brickCounter % 4 == 0 && rowNumber % 2 == 0)
@@ -31,7 +31,7 @@ public class SpawnBricks : MonoBehaviour
                     currentY -= 0.7f;
                     currentX = -2.4f;
                     brickCounter = 0;
-                    brickType = Random.Range(0, 20);
+                    brickOrOther = Random.Range(0, 20);
                     rowNumber++;
                 }
                 else if (brickCounter % 5 == 0 && rowNumber % 2 != 0)
@@ -39,32 +39,44 @@ public class SpawnBricks : MonoBehaviour
                     currentY -= 0.7f;
                     currentX = -1.8f;
                     brickCounter = 0;
-                    brickType = Random.Range(0, 20);
+                    brickOrOther = Random.Range(0, 20);
                     rowNumber++;
                 }
 
                 if (Random.Range(0, 10) < 9)
                 {
                     int brickColorChosen = Random.Range(0, 5);
-                    GameObject newBrick;
+                    int brickType = Random.Range(0, 100);
 
-                    if (Random.Range(0, 100) > 98)//Bomb Bricks
-                    {
-                        newBrick = Instantiate(brickSpecial);
-                        newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRectSpecial1[brickColorChosen];
-                        newBrick.GetComponent<BombBrick>().color = brickColorChosen;
-                    }
-                    else
-                    {
-                        newBrick = Instantiate(brick);
-                        newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRect[brickColorChosen];
-                        newBrick.GetComponent<Bricks>().color = brickColorChosen;
-                    }
+                    GameObject newBrick = Instantiate(brick);
 
+                    newBrick.GetComponent<Bricks>().color = brickColorChosen;
                     newBrick.transform.position = new Vector2(currentX, currentY);
                     newBrick.GetComponentInChildren<ParticleSystemRenderer>().material = brickColorsMat[brickColorChosen];
                     newBrick.transform.parent = this.transform;
+
+                    if (brickType > 97)//Bomb Bricks ~ 2% chance
+                    {
+                        newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRectSpecial1[brickColorChosen];
+                        newBrick.GetComponent<Bricks>().brickType = 1;
+                    }
+                    else if (brickType > 50)//Speed Brick ~ 3% chance
+                    {
+                        newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRectSpecial2[brickColorChosen];
+                        newBrick.GetComponent<Bricks>().brickType = 2;
+                    }
+                    else if (brickType > 91)//Slow Mo Bricks ~ 3% chance
+                    {
+                        newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRectSpecial3[brickColorChosen];
+                        newBrick.GetComponent<Bricks>().brickType = 3;
+                    }
+                    else
+                    {
+                        newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRect[brickColorChosen];
+                        newBrick.GetComponent<Bricks>().brickType = 0;
+                    }
                 }
+
                 brickCounter++;
             }
             else//fan
@@ -79,7 +91,7 @@ public class SpawnBricks : MonoBehaviour
                 newWind.transform.parent = this.transform;
                 currentY -= 0.7f;
 
-                brickType = Random.Range(0, 20);
+                brickOrOther = Random.Range(0, 20);
             }
         }
     }
