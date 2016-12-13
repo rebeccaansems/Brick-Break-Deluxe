@@ -32,7 +32,6 @@ public class SpawnBricks : MonoBehaviour
 
         for (int i = 1; i < 60; i++)
         {
-
             if (brickOrOther < 70)//normal brick
             {
                 currentX += 1.2f;
@@ -99,7 +98,7 @@ public class SpawnBricks : MonoBehaviour
                 newWind.GetComponent<SpriteRenderer>().sprite = brickColorsSquare[brickColorChosen];
                 newWind.GetComponentInChildren<ParticleSystemRenderer>().material = brickColorsMat[brickColorChosen];
                 newWind.transform.parent = this.transform;
-                currentY -= 0.7f;
+                //currentY -= 0.7f;
 
                 brickOrOther = Random.Range(0, 20);
             }

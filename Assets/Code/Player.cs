@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     public int score = 0;
-    public Text scoreText;
+    public Text scoreText, highScoreText;
     public float speed, gravityModifier;
     public bool speedBrickEffect = false;
     public ParticleSystem particles;
@@ -17,8 +17,18 @@ public class Player : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        if (!PlayerPrefs.HasKey("PlayerScore1"))
+        {
+            PlayerPrefs.SetInt("PlayerScore1", 0);
+            PlayerPrefs.SetInt("PlayerScore2", 0);
+            PlayerPrefs.SetInt("PlayerScore3", 0);
+            PlayerPrefs.SetInt("PlayerScore4", 0);
+            PlayerPrefs.SetInt("PlayerScore5", 0);
+        }
+
         gravityOriginal = new Vector3(0, -9.81f, 0);
         Physics2D.gravity = gravityOriginal;
+        highScoreText.text = "High Score: " + PlayerPrefs.GetInt("PlayerScore1");
     }
 
     // Update is called once per frame
@@ -51,21 +61,9 @@ public class Player : MonoBehaviour
             PlayerPrefs.SetInt("PlayerScore3", leaderboardScores[3]);
             PlayerPrefs.SetInt("PlayerScore4", leaderboardScores[2]);
             PlayerPrefs.SetInt("PlayerScore5", leaderboardScores[1]);
-
-            Debug.Log(PlayerPrefs.GetInt("PlayerScore1") + " " + PlayerPrefs.GetInt("PlayerScore2") + " " + PlayerPrefs.GetInt("PlayerScore3") + " " + PlayerPrefs.GetInt("PlayerScore4") + " " + PlayerPrefs.GetInt("PlayerScore5"));
-
-        }
-        else
-        {
-            PlayerPrefs.SetInt("PlayerScore1", 0);
-            PlayerPrefs.SetInt("PlayerScore2", 0);
-            PlayerPrefs.SetInt("PlayerScore3", 0);
-            PlayerPrefs.SetInt("PlayerScore4", 0);
-            PlayerPrefs.SetInt("PlayerScore5", 0);
-
-            PlayerDied();
         }
 
+        highScoreText.text = "High Score: " + PlayerPrefs.GetInt("PlayerScore1");
         PlayerPrefs.Save();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
