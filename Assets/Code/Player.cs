@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public Text score;
+    public int score = 0;
+    public Text scoreText;
     public float speed, gravityModifier;
     public bool speedBrickEffect = false;
     public ParticleSystem particles;
@@ -31,7 +32,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        score.text = "Score: " + (3 + (int)this.transform.position.y * (-1));
+        scoreText.text = "Score: " + score;
 
         this.GetComponent<Rigidbody2D>().AddForce(new Vector2(Input.acceleration.x * speed, 0));
         particles.gameObject.transform.position = this.transform.position;

@@ -60,7 +60,7 @@ public class Bricks : MonoBehaviour
         int radius = 1;
         bool colorMatch = true;
 
-        if(brickType == 1)
+        if (brickType == 1)
         {
             radius = 2;
             colorMatch = false;
@@ -75,6 +75,7 @@ public class Bricks : MonoBehaviour
                 if (hitColliders[i].GetComponent<Bricks>().color == this.color || colorMatch == false)
                 {
                     hitColliders[i].gameObject.GetComponent<Bricks>().DestroyBrick(true);
+                    player.score++;
                 }
             }
             i++;
@@ -88,9 +89,9 @@ public class Bricks : MonoBehaviour
 
     IEnumerator DestroyBrickTimer(bool starterTimer)
     {
-        if(player.speedBrickEffect == false)
+        if (player.speedBrickEffect == false)
         {
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(Random.Range(0.05f, 0.15f));
         }
         particles.Play();
         Destroy(this.gameObject.GetComponent<SpriteRenderer>());
