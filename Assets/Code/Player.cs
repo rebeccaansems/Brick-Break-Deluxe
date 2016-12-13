@@ -26,8 +26,48 @@ public class Player : MonoBehaviour
     {
         if (this.transform.position.x > 3.6 || this.transform.position.x < -3.6)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            PlayerDied();
         }
+    }
+
+    void PlayerDied()
+    {
+        if (PlayerPrefs.HasKey("PlayerScore1"))
+        {
+            List<int> leaderboardScores = new List<int>();
+
+            leaderboardScores.Add(PlayerPrefs.GetInt("PlayerScore1"));
+            leaderboardScores.Add(PlayerPrefs.GetInt("PlayerScore2"));
+            leaderboardScores.Add(PlayerPrefs.GetInt("PlayerScore3"));
+            leaderboardScores.Add(PlayerPrefs.GetInt("PlayerScore4"));
+            leaderboardScores.Add(PlayerPrefs.GetInt("PlayerScore5"));
+
+            leaderboardScores.Add(score);
+
+            leaderboardScores.Sort();
+
+            PlayerPrefs.SetInt("PlayerScore1", leaderboardScores[5]);
+            PlayerPrefs.SetInt("PlayerScore2", leaderboardScores[4]);
+            PlayerPrefs.SetInt("PlayerScore3", leaderboardScores[3]);
+            PlayerPrefs.SetInt("PlayerScore4", leaderboardScores[2]);
+            PlayerPrefs.SetInt("PlayerScore5", leaderboardScores[1]);
+
+            Debug.Log(PlayerPrefs.GetInt("PlayerScore1") + " " + PlayerPrefs.GetInt("PlayerScore2") + " " + PlayerPrefs.GetInt("PlayerScore3") + " " + PlayerPrefs.GetInt("PlayerScore4") + " " + PlayerPrefs.GetInt("PlayerScore5"));
+
+        }
+        else
+        {
+            PlayerPrefs.SetInt("PlayerScore1", 0);
+            PlayerPrefs.SetInt("PlayerScore2", 0);
+            PlayerPrefs.SetInt("PlayerScore3", 0);
+            PlayerPrefs.SetInt("PlayerScore4", 0);
+            PlayerPrefs.SetInt("PlayerScore5", 0);
+
+            PlayerDied();
+        }
+
+        PlayerPrefs.Save();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private void FixedUpdate()
@@ -41,7 +81,7 @@ public class Player : MonoBehaviour
     public void SpeedBrickModeEnabled()
     {
         speedBrickEffect = true;
-        if(particles.isPlaying == false)
+        if (particles.isPlaying == false)
         {
             particles.Play();
         }
