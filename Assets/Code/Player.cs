@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
 
         gravityOriginal = new Vector3(0, -9.81f, 0);
         Physics2D.gravity = gravityOriginal;
-        highScoreText.text = "High Score: " + PlayerPrefs.GetInt("PlayerScore1");
+        highScoreText.text = "HIGH SCORE: " + PlayerPrefs.GetInt("PlayerScore1").ToString("0000");
     }
 
     // Update is called once per frame
@@ -63,14 +63,14 @@ public class Player : MonoBehaviour
             PlayerPrefs.SetInt("PlayerScore5", leaderboardScores[1]);
         }
 
-        highScoreText.text = "High Score: " + PlayerPrefs.GetInt("PlayerScore1");
+        highScoreText.text = "HIGH SCORE: " + PlayerPrefs.GetInt("PlayerScore1").ToString("0000");
         PlayerPrefs.Save();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private void FixedUpdate()
     {
-        scoreText.text = "Score: " + score;
+        scoreText.text = "SCORE: " + score.ToString("0000");
 
         this.GetComponent<Rigidbody2D>().AddForce(new Vector2(Input.acceleration.x * speed, 0));
         particles.gameObject.transform.position = this.transform.position;

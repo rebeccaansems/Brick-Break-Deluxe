@@ -24,8 +24,6 @@ public class SpawnBricks : MonoBehaviour
         brickScaleX = (Screen.width / 57f) / (333 / 57f);
         brickScaleY = (Screen.height / 29f) / (534 / 29f);
 
-        Debug.Log(brickScaleX + ", " + brickScaleY);
-
         SpawnBrick();
         StartCoroutine(BrickSpawnTimer());
     }
