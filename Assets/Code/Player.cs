@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -24,6 +25,12 @@ public class Player : MonoBehaviour
             PlayerPrefs.SetInt("PlayerScore3", 0);
             PlayerPrefs.SetInt("PlayerScore4", 0);
             PlayerPrefs.SetInt("PlayerScore5", 0);
+
+            PlayerPrefs.SetString("PlayerDate1", DateTime.Today.ToShortDateString());
+            PlayerPrefs.SetString("PlayerDate2", DateTime.Today.ToShortDateString());
+            PlayerPrefs.SetString("PlayerDate3", DateTime.Today.ToShortDateString());
+            PlayerPrefs.SetString("PlayerDate4", DateTime.Today.ToShortDateString());
+            PlayerPrefs.SetString("PlayerDate5", DateTime.Today.ToShortDateString());
         }
 
         gravityOriginal = new Vector3(0, -9.81f, 0);
@@ -44,23 +51,29 @@ public class Player : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("PlayerScore1"))
         {
-            List<int> leaderboardScores = new List<int>();
+            List<KeyValuePair<string, int>> leaderboardScores = new List<KeyValuePair<string, int>>();
 
-            leaderboardScores.Add(PlayerPrefs.GetInt("PlayerScore1"));
-            leaderboardScores.Add(PlayerPrefs.GetInt("PlayerScore2"));
-            leaderboardScores.Add(PlayerPrefs.GetInt("PlayerScore3"));
-            leaderboardScores.Add(PlayerPrefs.GetInt("PlayerScore4"));
-            leaderboardScores.Add(PlayerPrefs.GetInt("PlayerScore5"));
+            leaderboardScores.Add(new KeyValuePair<string,int>(PlayerPrefs.GetString("PlayerDate1"), PlayerPrefs.GetInt("PlayerScore1")));
+            leaderboardScores.Add(new KeyValuePair<string,int>(PlayerPrefs.GetString("PlayerDate2"), PlayerPrefs.GetInt("PlayerScore2")));
+            leaderboardScores.Add(new KeyValuePair<string,int>(PlayerPrefs.GetString("PlayerDate3"), PlayerPrefs.GetInt("PlayerScore3")));
+            leaderboardScores.Add(new KeyValuePair<string,int>(PlayerPrefs.GetString("PlayerDate4"), PlayerPrefs.GetInt("PlayerScore4")));
+            leaderboardScores.Add(new KeyValuePair<string,int>(PlayerPrefs.GetString("PlayerDate5"), PlayerPrefs.GetInt("PlayerScore5")));
 
-            leaderboardScores.Add(score);
+            leaderboardScores.Add(new KeyValuePair<string,int>(DateTime.Today.ToShortDateString(), score));
 
-            leaderboardScores.Sort();
+            leaderboardScores.Sort((x, y) => x.Value.CompareTo(y.Value));
 
-            PlayerPrefs.SetInt("PlayerScore1", leaderboardScores[5]);
-            PlayerPrefs.SetInt("PlayerScore2", leaderboardScores[4]);
-            PlayerPrefs.SetInt("PlayerScore3", leaderboardScores[3]);
-            PlayerPrefs.SetInt("PlayerScore4", leaderboardScores[2]);
-            PlayerPrefs.SetInt("PlayerScore5", leaderboardScores[1]);
+            PlayerPrefs.SetInt("PlayerScore1", leaderboardScores[5].Value);
+            PlayerPrefs.SetInt("PlayerScore2", leaderboardScores[4].Value);
+            PlayerPrefs.SetInt("PlayerScore3", leaderboardScores[3].Value);
+            PlayerPrefs.SetInt("PlayerScore4", leaderboardScores[2].Value);
+            PlayerPrefs.SetInt("PlayerScore5", leaderboardScores[1].Value);
+
+            PlayerPrefs.SetString("PlayerDate1", leaderboardScores[5].Key);
+            PlayerPrefs.SetString("PlayerDate2", leaderboardScores[4].Key);
+            PlayerPrefs.SetString("PlayerDate3", leaderboardScores[3].Key);
+            PlayerPrefs.SetString("PlayerDate4", leaderboardScores[2].Key);
+            PlayerPrefs.SetString("PlayerDate5", leaderboardScores[1].Key);
         }
 
         highScoreText.text = "HIGH SCORE: " + PlayerPrefs.GetInt("PlayerScore1").ToString("0000");
