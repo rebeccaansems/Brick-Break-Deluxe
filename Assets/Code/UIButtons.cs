@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class UIButtons : MonoBehaviour
 {
     public Canvas pauseCanvas;
-
     public Text highscore1, highscore2, highscore3, highscore4, highscore5;
 
     private void Start()

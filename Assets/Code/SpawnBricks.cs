@@ -107,7 +107,7 @@ public class SpawnBricks : MonoBehaviour
                 int brickColorChosen = Random.Range(0, 5);
 
                 GameObject newWind = Instantiate(wind);
-                newWind.transform.position = new Vector2(2.85f * xModifier, currentY);
+                newWind.transform.position = new Vector2(4f * xModifier, currentY);
                 newWind.transform.localScale = new Vector2(brickScaleX, brickScaleY);
                 newWind.GetComponent<SpriteRenderer>().sprite = brickColorsSquare[brickColorChosen];
                 newWind.GetComponentInChildren<ParticleSystemRenderer>().material = brickColorsMat[brickColorChosen];
