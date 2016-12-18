@@ -90,7 +90,7 @@ public class SpawnBricks : MonoBehaviour
                         newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRectSpecial2[brickColorChosen];
                         newBrick.GetComponent<Bricks>().brickType = 2;
                     }
-                    else if (brickType < 50)//Color Change Bricks ~ 0.3% chance
+                    else if (brickType < 15)//Color Change Bricks ~ 0.3% chance
                     {
                         newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRectSpecial3[brickColorChosen];
                         newBrick.GetComponent<Bricks>().brickType = 3;
