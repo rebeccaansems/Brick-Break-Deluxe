@@ -73,7 +73,7 @@ public class Bricks : MonoBehaviour
 
     public void CheckBricksAround()
     {
-        int radius = 1;
+        int radius = 1, scoreCount = 0;
         bool colorMatch = true;
 
         if (brickType == 1)
@@ -91,11 +91,12 @@ public class Bricks : MonoBehaviour
                 if (hitColliders[i].GetComponent<Bricks>().color == this.color || colorMatch == false)
                 {
                     hitColliders[i].gameObject.GetComponent<Bricks>().DestroyBrick(true);
-                    player.score++;
+                    scoreCount++;
                 }
             }
             i++;
         }
+        player.score += scoreCount * scoreCount;
     }
 
     public void DestroyBrick(bool starterTimer)

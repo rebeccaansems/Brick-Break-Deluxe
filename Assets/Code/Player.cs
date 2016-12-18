@@ -83,6 +83,10 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(score > PlayerPrefs.GetInt("PlayerScore1"))
+        {
+            scoreText.color = Color.yellow;
+        }
         scoreText.text = "SCORE: " + score.ToString("0000");
 
         this.GetComponent<Rigidbody2D>().AddForce(new Vector2(Input.acceleration.x * speed, 0));

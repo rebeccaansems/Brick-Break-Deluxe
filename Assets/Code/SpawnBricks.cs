@@ -8,8 +8,8 @@ public class SpawnBricks : MonoBehaviour
     public Sprite[] brickColorsRect, brickColorsRectSpecial1, brickColorsRectSpecial2, brickColorsRectSpecial3, brickColorsSquare;
     public Material[] brickColorsMat;
 
+    private int rowNumber = 1;
     private float currentX = -1.8f, currentY = -2, yChange = -0.7f, brickScaleX = 1f, brickScaleY = 1f;
-
     private float xModifier, yModifier;
 
     private void Start()
@@ -41,12 +41,12 @@ public class SpawnBricks : MonoBehaviour
 
     public void SpawnBrick()
     {
-        int brickCounter = 0, rowNumber = 1;
+        int brickCounter = 0;
         int brickOrOther = Random.Range(0, 100);
 
         for (int i = 1; i < 60; i++)
         {
-            if (brickOrOther < 70)//normal brick
+            if (brickOrOther < 70 || rowNumber < 10)//normal brick
             {
                 currentX += 1.2f * xModifier;
                 if (brickCounter % 4 == 0 && rowNumber % 2 == 0)
@@ -115,6 +115,7 @@ public class SpawnBricks : MonoBehaviour
                 newWind.GetComponent<SpriteRenderer>().sprite = brickColorsSquare[brickColorChosen];
                 newWind.GetComponentInChildren<ParticleSystemRenderer>().material = brickColorsMat[brickColorChosen];
                 newWind.transform.parent = this.transform;
+                rowNumber++;
 
                 brickOrOther = Random.Range(0, 20);
             }
