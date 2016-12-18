@@ -24,6 +24,8 @@ public class SpawnBricks : MonoBehaviour
         brickScaleX = (Screen.width / 57f) / (333 / 57f);
         brickScaleY = (Screen.height / 29f) / (534 / 29f);
 
+        this.transform.localScale = new Vector2(brickScaleX, brickScaleY);
+
         SpawnBrick();
         StartCoroutine(BrickSpawnTimer());
     }
@@ -72,9 +74,10 @@ public class SpawnBricks : MonoBehaviour
                     GameObject newBrick = Instantiate(brick);
 
                     newBrick.GetComponent<Bricks>().color = brickColorChosen;
-                    newBrick.transform.position = new Vector2(currentX, currentY);
-                    newBrick.transform.localScale = new Vector2(brickScaleX, brickScaleY);
+                    newBrick.GetComponent<Bricks>().brickBase = brickColorsRect[brickColorChosen];
+                    newBrick.GetComponent<Bricks>().brickBaseParticles = brickColorsMat[brickColorChosen];
                     newBrick.GetComponentInChildren<ParticleSystemRenderer>().material = brickColorsMat[brickColorChosen];
+                    newBrick.transform.position = new Vector2(currentX, currentY);
                     newBrick.transform.parent = this.transform;
 
                     if (brickType < 10)//Bomb Bricks ~ 1% chance
@@ -87,7 +90,7 @@ public class SpawnBricks : MonoBehaviour
                         newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRectSpecial2[brickColorChosen];
                         newBrick.GetComponent<Bricks>().brickType = 2;
                     }
-                    else if (brickType < 15)//Slow Mo Bricks ~ 0.3% chance
+                    else if (brickType < 50)//Color Change Bricks ~ 0.3% chance
                     {
                         newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRectSpecial3[brickColorChosen];
                         newBrick.GetComponent<Bricks>().brickType = 3;

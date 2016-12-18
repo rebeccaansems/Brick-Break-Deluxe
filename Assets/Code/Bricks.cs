@@ -5,7 +5,10 @@ using UnityEngine;
 public class Bricks : MonoBehaviour
 {
     public ParticleSystem particles;
+    //brickType: 0-nothing, 1-bomb, 2-speed, 3-color change
     public int color, brickType;
+    public Sprite brickBase;
+    public Material brickBaseParticles;
 
     private Player player;
     private bool collidedWithPlayer = false, wasVisible = false;
@@ -30,9 +33,22 @@ public class Bricks : MonoBehaviour
             {
                 collision.gameObject.GetComponent<Player>().SpeedBrickModeEnabled();
             }
-            else if (brickType == 3)//Slowmo brick
+            else if (brickType == 3)//Color Change brick
             {
-
+                Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x, this.transform.position.y), 10);
+                int i = 0;
+                Sprite brickSprite = this.GetComponent<SpriteRenderer>().sprite;
+                while (i < hitColliders.Length)
+                {
+                    if (hitColliders[i].tag == "Brick")
+                    {
+                        hitColliders[i].gameObject.GetComponent<Bricks>().brickType = 0;
+                        hitColliders[i].gameObject.GetComponent<Bricks>().color = this.color;
+                        hitColliders[i].gameObject.GetComponent<SpriteRenderer>().sprite = brickBase;
+                        hitColliders[i].gameObject.GetComponentInChildren<ParticleSystemRenderer>().material = brickBaseParticles;
+                    }
+                    i++;
+                }
             }
 
             collidedWithPlayer = true;
