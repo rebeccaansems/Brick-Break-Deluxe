@@ -11,18 +11,13 @@ public class Bricks : MonoBehaviour
     public Material brickBaseParticles;
 
     private Player player;
+    private int radius = 1;
     private bool collidedWithPlayer = false, wasVisible = false;
 
     // Use this for initialization
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -73,7 +68,7 @@ public class Bricks : MonoBehaviour
 
     public void CheckBricksAround()
     {
-        int radius = 1, scoreCount = 0;
+        int scoreCount = 0;
         bool colorMatch = true;
 
         if (brickType == 1)
@@ -83,20 +78,51 @@ public class Bricks : MonoBehaviour
         }
 
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x, this.transform.position.y), radius);
+        List<GameObject> furtherBricks = new List<GameObject>();
         int i = 0;
+
         while (i < hitColliders.Length)
         {
             if (hitColliders[i].tag == "Brick")
             {
                 if (hitColliders[i].GetComponent<Bricks>().color == this.color || colorMatch == false)
                 {
+                    furtherBricks.AddRange(hitColliders[i].gameObject.GetComponent<Bricks>().CheckSurroundingBricksWithoutDestruction());
                     hitColliders[i].gameObject.GetComponent<Bricks>().DestroyBrick(true);
-                    scoreCount++;
+                    scoreCount--;
                 }
             }
             i++;
         }
+
+        foreach (GameObject brick in furtherBricks)
+        {
+            brick.GetComponent<Bricks>().DestroyBrick(true);
+            scoreCount++;
+        }
+
+        scoreCount = Mathf.Max(1, scoreCount);
+
         player.score += scoreCount * scoreCount;
+    }
+
+    public List<GameObject> CheckSurroundingBricksWithoutDestruction()
+    {
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x, this.transform.position.y), radius);
+        List<GameObject> surroundingBricks = new List<GameObject>();
+        int i = 0;
+        while (i < hitColliders.Length)
+        {
+            if (hitColliders[i].tag == "Brick")
+            {
+                if (hitColliders[i].GetComponent<Bricks>().color == this.color)
+                {
+                    surroundingBricks.Add(hitColliders[i].gameObject);
+                }
+            }
+            i++;
+        }
+        return surroundingBricks;
     }
 
     public void DestroyBrick(bool starterTimer)
