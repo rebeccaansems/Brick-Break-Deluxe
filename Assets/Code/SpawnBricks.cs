@@ -9,22 +9,15 @@ public class SpawnBricks : MonoBehaviour
     public Material[] brickColorsMat;
 
     private int rowNumber = 1;
-    private float currentX = -1.8f, currentY = -2, yChange = -0.7f, brickScaleX = 1f, brickScaleY = 1f;
-    private float xModifier, yModifier;
+    private float xChange, yChange, xScale, yScale, xCurrent, yCurrent;
 
     private void Start()
     {
-        xModifier = Screen.width / 333f;
-        yModifier = Screen.height / 534f;
+        xChange = (Screen.width / (57 * 4.5f));
+        yChange = (Screen.height / (29 * 20f));
 
-        yChange = -yChange * yModifier;
-        currentX = currentX * xModifier;
-        currentY = currentY * yModifier;
-
-        brickScaleX = (Screen.width / 57f) / (333 / 57f);
-        brickScaleY = (Screen.height / 29f) / (534 / 29f);
-
-        this.transform.localScale = new Vector2(brickScaleX, brickScaleY);
+        xScale = Screen.width / (57 * 4.5f);
+        yScale = Screen.height / (29 * 15f);
 
         SpawnBrick();
         StartCoroutine(BrickSpawnTimer());
@@ -50,19 +43,19 @@ public class SpawnBricks : MonoBehaviour
         {
             if (brickOrOther < brickChance)//brick
             {
-                currentX += 1.2f * xModifier;
+                xCurrent += 1.2f * xChange;
                 if (brickCounter % 4 == 0 && rowNumber % 2 == 0)
                 {
-                    currentY -= yChange;
-                    currentX = -2.4f * xModifier;
+                    yCurrent -= yChange;
+                    xCurrent = -2.4f * xChange;
                     brickCounter = 0;
                     brickOrOther = Random.Range(0, 20);
                     rowNumber++;
                 }
                 else if (brickCounter % 5 == 0 && rowNumber % 2 != 0)
                 {
-                    currentY -= yChange;
-                    currentX = -1.8f * xModifier;
+                    yCurrent -= yChange;
+                    xCurrent = -1.8f * xChange;
                     brickCounter = 0;
                     brickOrOther = Random.Range(0, 20);
                     rowNumber++;
@@ -79,7 +72,8 @@ public class SpawnBricks : MonoBehaviour
                     newBrick.GetComponent<Bricks>().brickBase = brickColorsRect[brickColorChosen];
                     newBrick.GetComponent<Bricks>().brickBaseParticles = brickColorsMat[brickColorChosen];
                     newBrick.GetComponentInChildren<ParticleSystemRenderer>().material = brickColorsMat[brickColorChosen];
-                    newBrick.transform.position = new Vector2(currentX, currentY);
+                    newBrick.transform.position = new Vector2(xCurrent, yCurrent);
+                    newBrick.transform.localScale = new Vector2(xScale, yScale);
                     newBrick.transform.parent = this.transform;
 
                     if (brickType < 10)//Bomb Bricks ~ 1% chance
@@ -107,12 +101,12 @@ public class SpawnBricks : MonoBehaviour
             }
             else//fan
             {
-                currentY -= yChange;
+                yCurrent -= yChange;
                 int brickColorChosen = Random.Range(0, 5);
 
                 GameObject newWind = Instantiate(wind);
-                newWind.transform.position = new Vector2(4f * xModifier, currentY);
-                newWind.transform.localScale = new Vector2(brickScaleX, brickScaleY);
+                newWind.transform.position = new Vector2(4f * xChange, yCurrent);
+                newWind.transform.localScale = new Vector2(xScale, yScale);
                 newWind.GetComponent<SpriteRenderer>().sprite = brickColorsSquare[brickColorChosen];
                 newWind.GetComponentInChildren<ParticleSystemRenderer>().material = brickColorsMat[brickColorChosen];
                 newWind.transform.parent = this.transform;
