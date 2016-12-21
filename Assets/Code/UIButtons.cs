@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIButtons : MonoBehaviour
 {
@@ -10,8 +11,11 @@ public class UIButtons : MonoBehaviour
 
     private void Start()
     {
-        pauseCanvas.enabled = false;
-        UpdateHighScores();
+        if (pauseCanvas != null)
+        {
+            pauseCanvas.enabled = false;
+            UpdateHighScores();
+        }
     }
 
     private void OnApplicationPause(bool pause)
@@ -51,5 +55,10 @@ public class UIButtons : MonoBehaviour
         highscore3.text = PlayerPrefs.GetString("PlayerDate3")+ " - " + PlayerPrefs.GetInt("PlayerScore3").ToString("0000");
         highscore4.text = PlayerPrefs.GetString("PlayerDate4")+ " - " + PlayerPrefs.GetInt("PlayerScore4").ToString("0000");
         highscore5.text = PlayerPrefs.GetString("PlayerDate5")+ " - " + PlayerPrefs.GetInt("PlayerScore5").ToString("0000");
+    }
+
+    public void StartGame()
+    {
+        SceneManager.LoadScene(1);
     }
 }
