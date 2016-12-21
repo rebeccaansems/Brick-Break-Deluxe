@@ -43,11 +43,12 @@ public class SpawnBricks : MonoBehaviour
     {
         int brickCounter = 0;
         int brickChance = Mathf.Max(1000 - (rowNumber / 10), 500);
+        int blankBrickChance = Mathf.Max(100 - (rowNumber / 100), 75);
         int brickOrOther = Random.Range(0, 1000);
 
-        for (int i = 1; i < 60; i++)
+        for (int i = 1; i < 64; i++)
         {
-            if (brickOrOther < brickChance)//normal brick
+            if (brickOrOther < brickChance)//brick
             {
                 currentX += 1.2f * xModifier;
                 if (brickCounter % 4 == 0 && rowNumber % 2 == 0)
@@ -67,7 +68,7 @@ public class SpawnBricks : MonoBehaviour
                     rowNumber++;
                 }
 
-                if (Random.Range(0, 10) < 9)
+                if (Random.Range(0, 100) < blankBrickChance)
                 {
                     int brickColorChosen = Random.Range(0, 5);
                     int brickType = Random.Range(0, 1000);
@@ -102,7 +103,6 @@ public class SpawnBricks : MonoBehaviour
                         newBrick.GetComponent<Bricks>().brickType = 0;
                     }
                 }
-
                 brickCounter++;
             }
             else//fan
