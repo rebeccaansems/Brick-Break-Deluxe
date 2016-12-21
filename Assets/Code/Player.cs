@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     public float speed, gravityModifier;
     public bool speedBrickEffect = false;
     public ParticleSystem particles;
-    public GameObject[] deathBars;
+    public GameObject deathBar;
 
     private Vector3 gravityOriginal;
 
@@ -33,14 +33,9 @@ public class Player : MonoBehaviour
             PlayerPrefs.SetString("PlayerDate4", DateTime.Today.ToShortDateString());
             PlayerPrefs.SetString("PlayerDate5", DateTime.Today.ToShortDateString());
 
-            PlayerPrefs.SetInt("PlayerDeathLevel1", 5);
-            PlayerPrefs.SetInt("PlayerDeathLevel2", 5);
-            PlayerPrefs.SetInt("PlayerDeathLevel3", 5);
-            PlayerPrefs.SetInt("PlayerDeathLevel4", 5);
-            PlayerPrefs.SetInt("PlayerDeathLevel5", 5);
+            PlayerPrefs.SetFloat("PlayerDeathLevel", 5);
         }
-
-        SetDeathMarkers();
+        deathBar.transform.position = new Vector2(0, PlayerPrefs.GetFloat("PlayerDeathLevel"));
 
         gravityOriginal = new Vector3(0, -9.81f, 0);
         Physics2D.gravity = gravityOriginal;
@@ -84,40 +79,14 @@ public class Player : MonoBehaviour
             PlayerPrefs.SetString("PlayerDate4", leaderboardScores[2].Key);
             PlayerPrefs.SetString("PlayerDate5", leaderboardScores[1].Key);
 
-            List<int> deathLevels = new List<int>();
+            PlayerPrefs.SetFloat("PlayerDeathLevel", Mathf.Min(PlayerPrefs.GetFloat("PlayerDeathLevel"), this.transform.position.y));
 
-            deathLevels.Add(PlayerPrefs.GetInt("PlayerDeathLevel1"));
-            deathLevels.Add(PlayerPrefs.GetInt("PlayerDeathLevel2"));
-            deathLevels.Add(PlayerPrefs.GetInt("PlayerDeathLevel3"));
-            deathLevels.Add(PlayerPrefs.GetInt("PlayerDeathLevel4"));
-            deathLevels.Add(PlayerPrefs.GetInt("PlayerDeathLevel5"));
-            deathLevels.Add((int)this.transform.position.y);
-
-            deathLevels.Sort((x, y) => x.CompareTo(y));
-
-            PlayerPrefs.SetInt("PlayerDeathLevel1", deathLevels[0]);
-            PlayerPrefs.SetInt("PlayerDeathLevel2", deathLevels[1]);
-            PlayerPrefs.SetInt("PlayerDeathLevel3", deathLevels[2]);
-            PlayerPrefs.SetInt("PlayerDeathLevel4", deathLevels[3]);
-            PlayerPrefs.SetInt("PlayerDeathLevel5", deathLevels[4]);
-
-            deathLevels.Clear();
             leaderboardScores.Clear();
         }
 
         highScoreText.text = "HIGH SCORE: " + PlayerPrefs.GetInt("PlayerScore1").ToString("00000000");
         PlayerPrefs.Save();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        SetDeathMarkers();
-    }
-
-    private void SetDeathMarkers()
-    {
-        deathBars[0].transform.position = new Vector2(0, PlayerPrefs.GetInt("PlayerDeathLevel1"));
-        deathBars[1].transform.position = new Vector2(0, PlayerPrefs.GetInt("PlayerDeathLevel2"));
-        deathBars[2].transform.position = new Vector2(0, PlayerPrefs.GetInt("PlayerDeathLevel3"));
-        deathBars[3].transform.position = new Vector2(0, PlayerPrefs.GetInt("PlayerDeathLevel4"));
-        deathBars[4].transform.position = new Vector2(0, PlayerPrefs.GetInt("PlayerDeathLevel5"));
     }
 
     private void FixedUpdate()
