@@ -97,7 +97,7 @@ public class Player : MonoBehaviour
         }
         scoreText.text = "SCORE: " + score.ToString("00000000");
 
-        transform.Translate(new Vector2(Input.acceleration.x, 0));
+        this.GetComponent<Rigidbody2D>().AddForce(new Vector2(Input.acceleration.x * speed, 0));
 
         particles.gameObject.transform.position = this.transform.position;
     }
