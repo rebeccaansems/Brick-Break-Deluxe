@@ -9,15 +9,15 @@ public class SpawnBricks : MonoBehaviour
     public Material[] brickColorsMat;
 
     private int rowNumber = 1;
-    private float xChange, yChange, xScale, yScale, xCurrent, yCurrent;
+    private float xChange = 1, yChange = 1, xScale = 1, yScale = 1, xCurrent, yCurrent;
 
     private void Start()
     {
-        xChange = (Screen.width / (57 * 4.5f));
-        yChange = (Screen.height / (29 * 20f));
+        //xChange = (Screen.width / (57 * 4.5f));
+        //yChange = (Screen.height / (29 * 20f));
 
-        xScale = Screen.width / (57 * 4.5f);
-        yScale = Screen.height / (29 * 15f);
+        //xScale = Screen.width / (57 * 4.5f);
+        //yScale = Screen.height / (29 * 15f);
 
         SpawnBrick();
         StartCoroutine(BrickSpawnTimer());
