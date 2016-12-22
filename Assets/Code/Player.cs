@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
         }
         deathBar.transform.position = new Vector2(0, PlayerPrefs.GetFloat("PlayerDeathLevel"));
 
-        gravityOriginal = new Vector3(0, -9.81f, 0);
+        gravityOriginal = new Vector3(0, -12.5f, 0);
         Physics2D.gravity = gravityOriginal;
         highScoreText.text = "HIGH SCORE: " + PlayerPrefs.GetInt("PlayerScore1").ToString("00000000");
     }
