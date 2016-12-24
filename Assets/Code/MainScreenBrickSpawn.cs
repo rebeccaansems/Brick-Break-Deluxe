@@ -12,6 +12,8 @@ public class MainScreenBrickSpawn : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
         MainScreenBricks[] newBrick = this.gameObject.GetComponentsInChildren<MainScreenBricks>();
 
         for (int i = 0; i < this.transform.childCount; i++)
