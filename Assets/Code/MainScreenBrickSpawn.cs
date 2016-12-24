@@ -20,7 +20,6 @@ public class MainScreenBrickSpawn : MonoBehaviour
 
             newBrick[i].GetComponentInChildren<ParticleSystemRenderer>().material = brickColorsMat[brickColorChosen];
             newBrick[i].GetComponent<SpriteRenderer>().sprite = brickColorsRect[brickColorChosen];
-
         }
     }
 
