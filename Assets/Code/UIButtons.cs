@@ -8,6 +8,7 @@ using System;
 public class UIButtons : MonoBehaviour
 {
     public Canvas pauseCanvas, optionsCanvas;
+    public Button pauseButton, unpausePanel;
     public Text highscoreOverlay;
     public Text highscore1, highscore2, highscore3, highscore4, highscore5;
 
@@ -20,13 +21,22 @@ public class UIButtons : MonoBehaviour
             pauseCanvas.enabled = false;
             UpdateHighScores();
         }
-        optionsCanvas.enabled = false;
+
+        if (optionsCanvas != null)
+        {
+            optionsCanvas.enabled = false;
+        }
+
+        unpausePanel.enabled = false;
+        unpausePanel.GetComponent<Image>().raycastTarget = false;
     }
 
     private void OnApplicationPause(bool pause)
     {
         if (pause)
         {
+            pauseButton.enabled = true;
+            pauseButton.enabled = true;
             pauseCanvas.enabled = true;
             Time.timeScale = 0;
             UpdateHighScores();
@@ -35,6 +45,10 @@ public class UIButtons : MonoBehaviour
 
     public void PauseButtonPressed()
     {
+        pauseButton.GetComponent<Image>().color = Color.grey;
+        unpausePanel.enabled = true;
+        unpausePanel.GetComponent<Image>().raycastTarget = true;
+
         if (Time.timeScale == 0)
         {
             ReturnButtonPressed();
@@ -53,7 +67,20 @@ public class UIButtons : MonoBehaviour
         {
             pauseCanvas.enabled = false;
         }
-        optionsCanvas.enabled = false;
+
+        if (optionsCanvas != null)
+        {
+            optionsCanvas.enabled = false;
+        }
+            
+        if (pauseButton != null)
+        {
+            pauseButton.GetComponent<Image>().color = Color.white;
+        }
+
+        unpausePanel.enabled = false;
+        unpausePanel.GetComponent<Image>().raycastTarget = false;
+
         Time.timeScale = 1;
     }
 
@@ -76,12 +103,21 @@ public class UIButtons : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
     public void OnOptionsButtonPressed()
     {
         if (pauseCanvas != null)
         {
             pauseCanvas.enabled = false;
         }
+
+        unpausePanel.enabled = true;
+        unpausePanel.GetComponent<Image>().raycastTarget = true;
+
         optionsCanvas.enabled = true;
         Time.timeScale = 0;
     }
@@ -102,7 +138,7 @@ public class UIButtons : MonoBehaviour
 
         PlayerPrefs.SetFloat("PlayerDeathLevel", 5);
 
-        if(deathBar != null)
+        if (deathBar != null)
         {
             deathBar.transform.position = new Vector2(0, PlayerPrefs.GetFloat("PlayerDeathLevel"));
         }
