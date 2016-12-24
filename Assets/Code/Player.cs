@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     public ParticleSystem particles;
     public GameObject deathBar;
     public PhysicsMaterial2D noBounce, normalBounce;
+    public Canvas gameOverScreen;
 
     private Vector3 gravityOriginal;
 
@@ -41,15 +42,14 @@ public class Player : MonoBehaviour
         gravityOriginal = new Vector3(0, -12.5f, 0);
         Physics2D.gravity = gravityOriginal;
         highScoreText.text = "HIGH SCORE: " + PlayerPrefs.GetInt("PlayerScore1").ToString("00000000");
+
+        Time.timeScale = 1;
+        gameOverScreen.enabled = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnBecameInvisible()
     {
-        if (this.transform.position.x > 3.6 || this.transform.position.x < -3.6)
-        {
-            PlayerDied();
-        }
+        PlayerDied();
     }
 
     void PlayerDied()
@@ -87,7 +87,13 @@ public class Player : MonoBehaviour
 
         highScoreText.text = "HIGH SCORE: " + PlayerPrefs.GetInt("PlayerScore1").ToString("00000000");
         PlayerPrefs.Save();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        Time.timeScale = 0;
+
+        if(gameOverScreen != null)
+        {
+            gameOverScreen.enabled = true;
+        }
     }
 
     private void FixedUpdate()

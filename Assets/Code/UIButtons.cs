@@ -11,6 +11,7 @@ public class UIButtons : MonoBehaviour
     public Button pauseButton, unpausePanel;
     public Text highscoreOverlay;
     public Text highscore1, highscore2, highscore3, highscore4, highscore5;
+    public Text GOhighscore1, GOhighscore2, GOhighscore3, GOhighscore4, GOhighscore5;
 
     public GameObject deathBar;
 
@@ -95,6 +96,15 @@ public class UIButtons : MonoBehaviour
             highscore5.text = PlayerPrefs.GetString("PlayerDate5") + " - " + PlayerPrefs.GetInt("PlayerScore5").ToString("00000000");
 
             highscoreOverlay.text = "HIGH SCORE: " + PlayerPrefs.GetInt("PlayerScore1").ToString("00000000");
+        }
+
+        if(GOhighscore1 != null)
+        {
+            GOhighscore1.text = PlayerPrefs.GetString("PlayerDate1") + " - " + PlayerPrefs.GetInt("PlayerScore1").ToString("00000000");
+            GOhighscore2.text = PlayerPrefs.GetString("PlayerDate2") + " - " + PlayerPrefs.GetInt("PlayerScore2").ToString("00000000");
+            GOhighscore3.text = PlayerPrefs.GetString("PlayerDate3") + " - " + PlayerPrefs.GetInt("PlayerScore3").ToString("00000000");
+            GOhighscore4.text = PlayerPrefs.GetString("PlayerDate4") + " - " + PlayerPrefs.GetInt("PlayerScore4").ToString("00000000");
+            GOhighscore5.text = PlayerPrefs.GetString("PlayerDate5") + " - " + PlayerPrefs.GetInt("PlayerScore5").ToString("00000000");
         }
     }
 
