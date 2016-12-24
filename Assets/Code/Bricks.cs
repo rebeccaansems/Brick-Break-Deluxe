@@ -67,9 +67,12 @@ public class Bricks : MonoBehaviour
     private void OnBecameInvisible()
     {
         //destroy brick because it went off screen but is not currently doing the DestroyBrick IEnumerator
-        if (collidedWithPlayer == false && wasVisible == true && particles.isPlaying == false)
+        if (player != null)
         {
-            Destroy(this.gameObject);
+            if (collidedWithPlayer == false && wasVisible == true && particles.isPlaying == false && this.transform.position.y > player.transform.position.y)
+            {
+                Destroy(this.gameObject);
+            }
         }
     }
 
@@ -142,6 +145,7 @@ public class Bricks : MonoBehaviour
 
     IEnumerator DestroyBrickTimer(bool starterTimer)
     {
+        yield return new WaitForSeconds(Random.Range(0.005f, 0.200f));
         particles.Play();
         Destroy(this.gameObject.GetComponent<SpriteRenderer>());
         Destroy(this.gameObject.GetComponent<BoxCollider2D>());
