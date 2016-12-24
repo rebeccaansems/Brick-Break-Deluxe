@@ -132,10 +132,6 @@ public class Bricks : MonoBehaviour
 
     IEnumerator DestroyBrickTimer(bool starterTimer)
     {
-        if (player.speedBrickEffect == false)
-        {
-            yield return new WaitForSeconds(Random.Range(0.05f, 0.15f));
-        }
         particles.Play();
         Destroy(this.gameObject.GetComponent<SpriteRenderer>());
         Destroy(this.gameObject.GetComponent<BoxCollider2D>());
