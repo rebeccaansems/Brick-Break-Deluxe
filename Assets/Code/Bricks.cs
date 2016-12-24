@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bricks : MonoBehaviour
 {
     public ParticleSystem particles;
-    //brickType: 0-nothing, 1-bomb, 2-speed, 3-color change
+    //brickType: 0-nothing, 1-bomb, 2-speed, 3-color bomb, 4-solid
     public int color, brickType;
     public Sprite brickBase;
     public Material brickBaseParticles;
@@ -46,9 +46,16 @@ public class Bricks : MonoBehaviour
                 }
             }
 
-            collidedWithPlayer = true;
-            CheckBricksAround();
-            DestroyBrick(true);
+            if (brickType == 4)//Solid brick
+            {
+
+            }
+            else
+            {
+                collidedWithPlayer = true;
+                CheckBricksAround();
+                DestroyBrick(true);
+            }
         }
     }
 
@@ -127,7 +134,10 @@ public class Bricks : MonoBehaviour
 
     public void DestroyBrick(bool starterTimer)
     {
-        StartCoroutine(DestroyBrickTimer(starterTimer));
+        if (brickType != 4)
+        {
+            StartCoroutine(DestroyBrickTimer(starterTimer));
+        }
     }
 
     IEnumerator DestroyBrickTimer(bool starterTimer)

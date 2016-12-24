@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnBricks : MonoBehaviour
 {
     public GameObject brick, wind;
-    public Sprite[] brickColorsRect, brickColorsRectSpecial1, brickColorsRectSpecial2, brickColorsRectSpecial3, brickColorsSquare;
+    public Sprite[] brickColorsRect, brickColorsRectSpecial1, brickColorsRectSpecial2, brickColorsRectSpecial3, brickColorsRectSpecial4, brickColorsSquare;
     public Material[] brickColorsMat;
 
     private int rowNumber = 1;
@@ -91,6 +91,11 @@ public class SpawnBricks : MonoBehaviour
                     {
                         newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRectSpecial3[brickColorChosen];
                         newBrick.GetComponent<Bricks>().brickType = 3;
+                    }
+                    else if (brickType < 17)//Solid Bricks ~ 0.2% chance
+                    {
+                        newBrick.GetComponent<SpriteRenderer>().sprite = brickColorsRectSpecial4[brickColorChosen];
+                        newBrick.GetComponent<Bricks>().brickType = 4;
                     }
                     else
                     {
