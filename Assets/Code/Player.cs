@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public bool speedBrickEffect = false;
     public ParticleSystem particles;
     public GameObject deathBar;
+    public PhysicsMaterial2D noBounce, normalBounce;
 
     private Vector3 gravityOriginal;
 
@@ -110,6 +111,7 @@ public class Player : MonoBehaviour
             particles.Play();
         }
         Physics2D.gravity = Physics2D.gravity * gravityModifier;
+        this.GetComponent<Rigidbody2D>().sharedMaterial = noBounce;
         StopCoroutine(SpeedBrickTimer());
         StartCoroutine(SpeedBrickTimer());
     }
@@ -119,6 +121,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(15);
         speedBrickEffect = false;
         Physics2D.gravity = gravityOriginal;
+        this.GetComponent<Rigidbody2D>().sharedMaterial = normalBounce;
         particles.Stop();
     }
 

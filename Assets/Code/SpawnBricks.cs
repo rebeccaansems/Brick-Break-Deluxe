@@ -28,7 +28,10 @@ public class SpawnBricks : MonoBehaviour
     {
         while (true)
         {
-            SpawnBrick();
+            if (GameObject.FindGameObjectsWithTag("Brick").Length < 120)
+            {
+                SpawnBrick();
+            }
             yield return new WaitForSeconds(4);
         }
     }
