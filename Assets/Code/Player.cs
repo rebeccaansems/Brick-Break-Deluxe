@@ -35,6 +35,12 @@ public class Player : MonoBehaviour
             PlayerPrefs.SetString("PlayerDate4", DateTime.Today.ToShortDateString());
             PlayerPrefs.SetString("PlayerDate5", DateTime.Today.ToShortDateString());
 
+            PlayerPrefs.SetInt("BricksDestroyedBlue", 0);
+            PlayerPrefs.SetInt("BricksDestroyedRed", 0);
+            PlayerPrefs.SetInt("BricksDestroyedPurple", 0);
+            PlayerPrefs.SetInt("BricksDestroyedGreen", 0);
+            PlayerPrefs.SetInt("BricksDestroyedYellow", 0);
+            
             PlayerPrefs.SetFloat("PlayerDeathLevel", 5);
         }
         deathBar.transform.position = new Vector2(0, PlayerPrefs.GetFloat("PlayerDeathLevel"));
