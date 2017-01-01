@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     public int score = 0;
+    public int[] brickBreak;
     public Text scoreText, highScoreText;
     public float speed, gravityModifier;
     public bool speedBrickEffect = false;
@@ -21,6 +22,8 @@ public class Player : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        brickBreak = new int[5];
+
         if (!PlayerPrefs.HasKey("PlayerScore1"))
         {
             PlayerPrefs.SetInt("PlayerScore1", 0);
@@ -35,11 +38,11 @@ public class Player : MonoBehaviour
             PlayerPrefs.SetString("PlayerDate4", DateTime.Today.ToShortDateString());
             PlayerPrefs.SetString("PlayerDate5", DateTime.Today.ToShortDateString());
 
-            PlayerPrefs.SetInt("BricksDestroyedBlue", 0);
-            PlayerPrefs.SetInt("BricksDestroyedRed", 0);
-            PlayerPrefs.SetInt("BricksDestroyedPurple", 0);
-            PlayerPrefs.SetInt("BricksDestroyedGreen", 0);
-            PlayerPrefs.SetInt("BricksDestroyedYellow", 0);
+            PlayerPrefs.SetInt("BricksDestroyed0", 0);
+            PlayerPrefs.SetInt("BricksDestroyed1", 0);
+            PlayerPrefs.SetInt("BricksDestroyed2", 0);
+            PlayerPrefs.SetInt("BricksDestroyed3", 0);
+            PlayerPrefs.SetInt("BricksDestroyed4", 0);
             
             PlayerPrefs.SetFloat("PlayerDeathLevel", 5);
         }
@@ -85,6 +88,12 @@ public class Player : MonoBehaviour
             PlayerPrefs.SetString("PlayerDate3", leaderboardScores[3].Key);
             PlayerPrefs.SetString("PlayerDate4", leaderboardScores[2].Key);
             PlayerPrefs.SetString("PlayerDate5", leaderboardScores[1].Key);
+            
+            PlayerPrefs.SetInt("BricksDestroyed0", PlayerPrefs.GetInt("BricksDestroyed0")+brickBreak[0]);
+            PlayerPrefs.SetInt("BricksDestroyed1", PlayerPrefs.GetInt("BricksDestroyed1")+brickBreak[1]);
+            PlayerPrefs.SetInt("BricksDestroyed2", PlayerPrefs.GetInt("BricksDestroyed2")+brickBreak[2]);
+            PlayerPrefs.SetInt("BricksDestroyed3", PlayerPrefs.GetInt("BricksDestroyed3")+brickBreak[3]);
+            PlayerPrefs.SetInt("BricksDestroyed4", PlayerPrefs.GetInt("BricksDestroyed4")+brickBreak[4]);
 
             PlayerPrefs.SetFloat("PlayerDeathLevel", Mathf.Min(PlayerPrefs.GetFloat("PlayerDeathLevel"), this.transform.position.y));
 

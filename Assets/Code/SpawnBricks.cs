@@ -13,13 +13,8 @@ public class SpawnBricks : MonoBehaviour
 
     private void Start()
     {
-        //xChange = (Screen.width / (57 * 4.5f));
-        //yChange = (Screen.height / (29 * 20f));
         yChange = 0.75f;
-
-        //xScale = Screen.width / (57 * 4.5f);
-        //yScale = Screen.height / (29 * 15f);
-
+        
         SpawnBrick();
         StartCoroutine(BrickSpawnTimer());
     }

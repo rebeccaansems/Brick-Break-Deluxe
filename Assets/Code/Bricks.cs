@@ -150,6 +150,7 @@ public class Bricks : MonoBehaviour
         Destroy(this.gameObject.GetComponent<SpriteRenderer>());
         Destroy(this.gameObject.GetComponent<BoxCollider2D>());
         yield return new WaitForSeconds(0.15f);
+        player.brickBreak[this.color]++;
         Destroy(this.gameObject);
         yield break;
     }
