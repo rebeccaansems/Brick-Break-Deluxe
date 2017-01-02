@@ -71,9 +71,9 @@ public class UIButtons : MonoBehaviour
             }
             else
             {
+                UpdateHighScores();
                 pauseCanvas.enabled = true;
                 Time.timeScale = 0;
-                UpdateHighScores();
             }
         }
     }
@@ -103,6 +103,11 @@ public class UIButtons : MonoBehaviour
 
     void UpdateHighScores()
     {
+        if (player != null)
+        {
+            player.GetComponent<Player>().UpdateHighScores();
+        }
+
         if (highscore1 != null)
         {
             highscore1.text = PlayerPrefs.GetString("PlayerDate1") + " - " + PlayerPrefs.GetInt("PlayerScore1").ToString("00000000");
@@ -112,15 +117,6 @@ public class UIButtons : MonoBehaviour
             highscore5.text = PlayerPrefs.GetString("PlayerDate5") + " - " + PlayerPrefs.GetInt("PlayerScore5").ToString("00000000");
 
             highscoreOverlay.text = "HIGH SCORE: " + PlayerPrefs.GetInt("PlayerScore1").ToString("00000000");
-        }
-
-        if (GOhighscore1 != null)
-        {
-            GOhighscore1.text = PlayerPrefs.GetString("PlayerDate1") + " - " + PlayerPrefs.GetInt("PlayerScore1").ToString("00000000");
-            GOhighscore2.text = PlayerPrefs.GetString("PlayerDate2") + " - " + PlayerPrefs.GetInt("PlayerScore2").ToString("00000000");
-            GOhighscore3.text = PlayerPrefs.GetString("PlayerDate3") + " - " + PlayerPrefs.GetInt("PlayerScore3").ToString("00000000");
-            GOhighscore4.text = PlayerPrefs.GetString("PlayerDate4") + " - " + PlayerPrefs.GetInt("PlayerScore4").ToString("00000000");
-            GOhighscore5.text = PlayerPrefs.GetString("PlayerDate5") + " - " + PlayerPrefs.GetInt("PlayerScore5").ToString("00000000");
         }
     }
 

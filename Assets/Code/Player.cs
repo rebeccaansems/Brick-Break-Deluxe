@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 {
     public int score = 0;
     public int[] brickBreak;
-    public Text scoreText, highScoreText;
+    public Text scoreText, highScoreText, gameOverText1, gameOverText2, gameOverText3, gameOverText4, gameOverText5;
     public float speed, gravityModifier;
     public bool speedBrickEffect = false;
     public ParticleSystem particles;
@@ -66,29 +66,7 @@ public class Player : MonoBehaviour
 
     void PlayerDied()
     {
-        List<KeyValuePair<string, int>> leaderboardScores = new List<KeyValuePair<string, int>>();
-
-        leaderboardScores.Add(new KeyValuePair<string, int>(PlayerPrefs.GetString("PlayerDate1"), PlayerPrefs.GetInt("PlayerScore1")));
-        leaderboardScores.Add(new KeyValuePair<string, int>(PlayerPrefs.GetString("PlayerDate2"), PlayerPrefs.GetInt("PlayerScore2")));
-        leaderboardScores.Add(new KeyValuePair<string, int>(PlayerPrefs.GetString("PlayerDate3"), PlayerPrefs.GetInt("PlayerScore3")));
-        leaderboardScores.Add(new KeyValuePair<string, int>(PlayerPrefs.GetString("PlayerDate4"), PlayerPrefs.GetInt("PlayerScore4")));
-        leaderboardScores.Add(new KeyValuePair<string, int>(PlayerPrefs.GetString("PlayerDate5"), PlayerPrefs.GetInt("PlayerScore5")));
-
-        leaderboardScores.Add(new KeyValuePair<string, int>(DateTime.Today.ToShortDateString(), score));
-
-        leaderboardScores.Sort((x, y) => x.Value.CompareTo(y.Value));
-
-        PlayerPrefs.SetInt("PlayerScore1", leaderboardScores[5].Value);
-        PlayerPrefs.SetInt("PlayerScore2", leaderboardScores[4].Value);
-        PlayerPrefs.SetInt("PlayerScore3", leaderboardScores[3].Value);
-        PlayerPrefs.SetInt("PlayerScore4", leaderboardScores[2].Value);
-        PlayerPrefs.SetInt("PlayerScore5", leaderboardScores[1].Value);
-
-        PlayerPrefs.SetString("PlayerDate1", leaderboardScores[5].Key);
-        PlayerPrefs.SetString("PlayerDate2", leaderboardScores[4].Key);
-        PlayerPrefs.SetString("PlayerDate3", leaderboardScores[3].Key);
-        PlayerPrefs.SetString("PlayerDate4", leaderboardScores[2].Key);
-        PlayerPrefs.SetString("PlayerDate5", leaderboardScores[1].Key);
+        UpdateHighScores();
 
         PlayerPrefs.SetInt("BricksDestroyed0", PlayerPrefs.GetInt("BricksDestroyed0") + brickBreak[0]);
         PlayerPrefs.SetInt("BricksDestroyed1", PlayerPrefs.GetInt("BricksDestroyed1") + brickBreak[1]);
@@ -97,9 +75,7 @@ public class Player : MonoBehaviour
         PlayerPrefs.SetInt("BricksDestroyed4", PlayerPrefs.GetInt("BricksDestroyed4") + brickBreak[4]);
 
         PlayerPrefs.SetFloat("PlayerDeathLevel", Mathf.Min(PlayerPrefs.GetFloat("PlayerDeathLevel"), this.transform.position.y));
-
-        leaderboardScores.Clear();
-
+        
         string unlockedBalls = PlayerPrefs.GetString("UnlockedBalls");
         char[] unlockedBallsCharArray = unlockedBalls.ToCharArray();
         if (PlayerPrefs.GetInt("BricksDestroyed0") > 10000)
@@ -140,6 +116,44 @@ public class Player : MonoBehaviour
         {
             gameOverScreen.enabled = true;
         }
+    }
+
+    public void UpdateHighScores()
+    {
+        List<KeyValuePair<string, int>> leaderboardScores = new List<KeyValuePair<string, int>>();
+
+        leaderboardScores.Add(new KeyValuePair<string, int>(PlayerPrefs.GetString("PlayerDate1"), PlayerPrefs.GetInt("PlayerScore1")));
+        leaderboardScores.Add(new KeyValuePair<string, int>(PlayerPrefs.GetString("PlayerDate2"), PlayerPrefs.GetInt("PlayerScore2")));
+        leaderboardScores.Add(new KeyValuePair<string, int>(PlayerPrefs.GetString("PlayerDate3"), PlayerPrefs.GetInt("PlayerScore3")));
+        leaderboardScores.Add(new KeyValuePair<string, int>(PlayerPrefs.GetString("PlayerDate4"), PlayerPrefs.GetInt("PlayerScore4")));
+        leaderboardScores.Add(new KeyValuePair<string, int>(PlayerPrefs.GetString("PlayerDate5"), PlayerPrefs.GetInt("PlayerScore5")));
+
+        leaderboardScores.Add(new KeyValuePair<string, int>(DateTime.Today.ToShortDateString(), score));
+
+        leaderboardScores.Sort((x, y) => x.Value.CompareTo(y.Value));
+
+        PlayerPrefs.SetInt("PlayerScore1", leaderboardScores[5].Value);
+        PlayerPrefs.SetInt("PlayerScore2", leaderboardScores[4].Value);
+        PlayerPrefs.SetInt("PlayerScore3", leaderboardScores[3].Value);
+        PlayerPrefs.SetInt("PlayerScore4", leaderboardScores[2].Value);
+        PlayerPrefs.SetInt("PlayerScore5", leaderboardScores[1].Value);
+
+        PlayerPrefs.SetString("PlayerDate1", leaderboardScores[5].Key);
+        PlayerPrefs.SetString("PlayerDate2", leaderboardScores[4].Key);
+        PlayerPrefs.SetString("PlayerDate3", leaderboardScores[3].Key);
+        PlayerPrefs.SetString("PlayerDate4", leaderboardScores[2].Key);
+        PlayerPrefs.SetString("PlayerDate5", leaderboardScores[1].Key);
+
+        if(gameOverText1 != null)
+        {
+            gameOverText1.text = PlayerPrefs.GetString("PlayerDate1") + " - " + PlayerPrefs.GetInt("PlayerScore1").ToString("00000000");
+            gameOverText2.text = PlayerPrefs.GetString("PlayerDate2") + " - " + PlayerPrefs.GetInt("PlayerScore2").ToString("00000000");
+            gameOverText3.text = PlayerPrefs.GetString("PlayerDate3") + " - " + PlayerPrefs.GetInt("PlayerScore3").ToString("00000000");
+            gameOverText4.text = PlayerPrefs.GetString("PlayerDate4") + " - " + PlayerPrefs.GetInt("PlayerScore4").ToString("00000000");
+            gameOverText5.text = PlayerPrefs.GetString("PlayerDate5") + " - " + PlayerPrefs.GetInt("PlayerScore5").ToString("00000000");
+        }
+
+        leaderboardScores.Clear();
     }
 
     private void FixedUpdate()
