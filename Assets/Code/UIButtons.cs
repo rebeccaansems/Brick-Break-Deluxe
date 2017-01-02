@@ -7,7 +7,7 @@ using System;
 
 public class UIButtons : MonoBehaviour
 {
-    public Canvas pauseCanvas, optionsCanvas;
+    public Canvas pauseCanvas, optionsCanvas, gameoverCanvas;
     public Button pauseButton, unpausePanel, returnButton;
     public Text highscoreOverlay;
     public Text highscore1, highscore2, highscore3, highscore4, highscore5;
@@ -59,19 +59,22 @@ public class UIButtons : MonoBehaviour
 
     public void PauseButtonPressed()
     {
-        pauseButton.GetComponent<Image>().color = Color.grey;
-        unpausePanel.enabled = true;
-        unpausePanel.GetComponent<Image>().raycastTarget = true;
+        if (!gameoverCanvas.enabled)
+        {
+            pauseButton.GetComponent<Image>().color = Color.grey;
+            unpausePanel.enabled = true;
+            unpausePanel.GetComponent<Image>().raycastTarget = true;
 
-        if (Time.timeScale == 0)
-        {
-            ReturnButtonPressed();
-        }
-        else
-        {
-            pauseCanvas.enabled = true;
-            Time.timeScale = 0;
-            UpdateHighScores();
+            if (Time.timeScale == 0)
+            {
+                ReturnButtonPressed();
+            }
+            else
+            {
+                pauseCanvas.enabled = true;
+                Time.timeScale = 0;
+                UpdateHighScores();
+            }
         }
     }
 
