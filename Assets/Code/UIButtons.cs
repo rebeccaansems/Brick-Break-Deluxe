@@ -159,6 +159,15 @@ public class UIButtons : MonoBehaviour
         PlayerPrefs.SetString("PlayerDate4", DateTime.Today.ToShortDateString());
         PlayerPrefs.SetString("PlayerDate5", DateTime.Today.ToShortDateString());
 
+        PlayerPrefs.SetInt("BricksDestroyed0", 0);
+        PlayerPrefs.SetInt("BricksDestroyed1", 0);
+        PlayerPrefs.SetInt("BricksDestroyed2", 0);
+        PlayerPrefs.SetInt("BricksDestroyed3", 0);
+        PlayerPrefs.SetInt("BricksDestroyed4", 0);
+
+        PlayerPrefs.SetInt("CurrentBallSelected", 0);
+        PlayerPrefs.SetString("UnlockedBalls", "ULLLLL");
+
         PlayerPrefs.SetFloat("PlayerDeathLevel", 5);
 
         if (deathBar != null)

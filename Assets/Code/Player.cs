@@ -104,9 +104,38 @@ public class Player : MonoBehaviour
             PlayerPrefs.SetFloat("PlayerDeathLevel", Mathf.Min(PlayerPrefs.GetFloat("PlayerDeathLevel"), this.transform.position.y));
 
             leaderboardScores.Clear();
+
+            string unlockedBalls = PlayerPrefs.GetString("UnlockedBalls");
+            char[] unlockedBallsCharArray = unlockedBalls.ToCharArray();
+            if (PlayerPrefs.GetInt("BricksDestroyed0") > 10000)
+            {
+                unlockedBallsCharArray[1] = 'U';
+            }
+            if (PlayerPrefs.GetInt("BricksDestroyed1") > 10000)
+            {
+                unlockedBallsCharArray[2] = 'U';
+            }
+            if (PlayerPrefs.GetInt("BricksDestroyed2") > 10000)
+            {
+                unlockedBallsCharArray[3] = 'U';
+            }
+            if (PlayerPrefs.GetInt("BricksDestroyed3") > 10000)
+            {
+                unlockedBallsCharArray[4] = 'U';
+            }
+            if (PlayerPrefs.GetInt("BricksDestroyed4") > 10000)
+            {
+                unlockedBallsCharArray[5] = 'U';
+            }
+
+            unlockedBalls = new string(unlockedBallsCharArray);
+            PlayerPrefs.SetString("UnlockedBalls", unlockedBalls);
         }
 
-        highScoreText.text = "HIGH SCORE: " + PlayerPrefs.GetInt("PlayerScore1").ToString("00000000");
+        if(highScoreText != null)
+        {
+            highScoreText.text = "HIGH SCORE: " + PlayerPrefs.GetInt("PlayerScore1").ToString("00000000");
+        }
         PlayerPrefs.Save();
 
         Time.timeScale = 0;
