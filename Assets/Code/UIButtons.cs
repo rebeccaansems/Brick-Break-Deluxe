@@ -19,12 +19,13 @@ public class UIButtons : MonoBehaviour
 
     public GameObject deathBar, player;
 
-    private int currentBall;
+    private int currentBall, timePlayed;
 
     private void Start()
     {
-        if (!PlayerPrefs.HasKey("CurrentBallSelected"))
+        if (!PlayerPrefs.HasKey("TimePlayed"))
         {
+            PlayerPrefs.SetInt("TimePlayed", 0);
             PlayerPrefs.SetInt("CurrentBallSelected", 0);
             PlayerPrefs.SetString("UnlockedBalls", "ULLLLL");
         }
@@ -59,6 +60,7 @@ public class UIButtons : MonoBehaviour
             pauseButton.enabled = true;
             pauseCanvas.enabled = true;
             Time.timeScale = 0;
+            timePlayed = 0;
             UpdateHighScores();
         }
     }
@@ -114,6 +116,10 @@ public class UIButtons : MonoBehaviour
 
     void UpdateHighScores()
     {
+        timePlayed = (int)(Time.unscaledTime/60) - timePlayed;
+        PlayerPrefs.SetInt("TimePlayed", PlayerPrefs.GetInt("TimePlayed")+timePlayed);
+        timePlayed = (int)(Time.unscaledTime/60);
+
         if (player != null)
         {
             player.GetComponent<Player>().UpdateHighScores();
@@ -130,6 +136,8 @@ public class UIButtons : MonoBehaviour
 
             highscoreOverlay.text = "HIGH SCORE: " + PlayerPrefs.GetInt("PlayerScore1").ToString("00000000");
         }
+
+        PlayerPrefs.Save();
     }
 
     public void StartGame()
@@ -158,6 +166,8 @@ public class UIButtons : MonoBehaviour
 
     public void ResetScoreButtonPressed()
     {
+        PlayerPrefs.SetInt("TimePlayed", 0);
+
         PlayerPrefs.SetInt("PlayerScore1", 0);
         PlayerPrefs.SetInt("PlayerScore2", 0);
         PlayerPrefs.SetInt("PlayerScore3", 0);
@@ -246,5 +256,7 @@ public class UIButtons : MonoBehaviour
         stats[5].text = PlayerPrefs.GetInt("BricksDestroyed5").ToString();
         stats[6].text = PlayerPrefs.GetInt("BricksDestroyed6").ToString();
         stats[7].text = PlayerPrefs.GetInt("BricksDestroyed7").ToString();
+
+        stats[8].text = PlayerPrefs.GetInt("TimePlayed").ToString();
     }
 }
