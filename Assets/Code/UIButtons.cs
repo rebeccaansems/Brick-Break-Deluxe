@@ -16,7 +16,7 @@ public class UIButtons : MonoBehaviour
     public Image selectedBall, lockedIcon;
     public List<Sprite> ballColors;
 
-    public GameObject deathBar;
+    public GameObject deathBar, player;
 
     private int currentBall;
 
@@ -214,6 +214,7 @@ public class UIButtons : MonoBehaviour
         if (!isLocked)
         {
             PlayerPrefs.SetInt("CurrentBallSelected", currentBall);
+            player.GetComponent<Player>().UpdateBallColor();
         }
     }
 }
