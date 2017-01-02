@@ -13,10 +13,20 @@ public class UIButtons : MonoBehaviour
     public Text highscore1, highscore2, highscore3, highscore4, highscore5;
     public Text GOhighscore1, GOhighscore2, GOhighscore3, GOhighscore4, GOhighscore5;
 
+    public Image selectedBall;
+    public List<Sprite> ballColors;
+
     public GameObject deathBar;
+
+    private int currentBall;
 
     private void Start()
     {
+        if (!PlayerPrefs.HasKey("CurrentBallSelected"))
+        {
+            PlayerPrefs.SetInt("CurrentBallSelected", 0);
+        }
+
         if (pauseCanvas != null)
         {
             pauseCanvas.enabled = false;
@@ -26,6 +36,8 @@ public class UIButtons : MonoBehaviour
         if (optionsCanvas != null)
         {
             optionsCanvas.enabled = false;
+            currentBall = PlayerPrefs.GetInt("CurrentBallSelected");
+            selectedBall.sprite = ballColors[currentBall];
         }
 
         unpausePanel.enabled = false;
@@ -73,7 +85,7 @@ public class UIButtons : MonoBehaviour
         {
             optionsCanvas.enabled = false;
         }
-            
+
         if (pauseButton != null)
         {
             pauseButton.GetComponent<Image>().color = Color.white;
@@ -98,7 +110,7 @@ public class UIButtons : MonoBehaviour
             highscoreOverlay.text = "HIGH SCORE: " + PlayerPrefs.GetInt("PlayerScore1").ToString("00000000");
         }
 
-        if(GOhighscore1 != null)
+        if (GOhighscore1 != null)
         {
             GOhighscore1.text = PlayerPrefs.GetString("PlayerDate1") + " - " + PlayerPrefs.GetInt("PlayerScore1").ToString("00000000");
             GOhighscore2.text = PlayerPrefs.GetString("PlayerDate2") + " - " + PlayerPrefs.GetInt("PlayerScore2").ToString("00000000");
@@ -155,5 +167,22 @@ public class UIButtons : MonoBehaviour
 
         UpdateHighScores();
         ReturnButtonPressed();
+    }
+
+    public void BallDirectionButtonPressed(int direction)
+    {
+        currentBall = currentBall + direction;
+
+        if (currentBall > ballColors.Count - 1)
+        {
+            currentBall = 0;
+        }
+        else if (currentBall < 0)
+        {
+            currentBall = ballColors.Count - 1;
+        }
+
+        PlayerPrefs.SetInt("CurrentBallSelected", currentBall);
+        selectedBall.sprite = ballColors[currentBall];
     }
 }

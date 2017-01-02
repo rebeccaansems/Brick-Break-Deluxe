@@ -16,12 +16,18 @@ public class Player : MonoBehaviour
     public GameObject deathBar;
     public PhysicsMaterial2D noBounce, normalBounce;
     public Canvas gameOverScreen;
+    public List<Sprite> allPossibleBalls;
+    public List<Color> particleColors;
 
     private Vector3 gravityOriginal;
 
     // Use this for initialization
     void Start()
     {
+        this.GetComponent<SpriteRenderer>().sprite = allPossibleBalls[PlayerPrefs.GetInt("CurrentBallSelected")];
+        ParticleSystem.MainModule ps = particles.main;
+        ps.startColor = particleColors[PlayerPrefs.GetInt("CurrentBallSelected")];
+
         brickBreak = new int[5];
 
         if (!PlayerPrefs.HasKey("PlayerScore1"))
