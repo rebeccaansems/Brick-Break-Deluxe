@@ -24,7 +24,10 @@ public class Bricks : MonoBehaviour
     {
         if (collision.collider.tag == "Player" && collidedWithPlayer == false)
         {
-            if (brickType == 2)//Speed brick
+            if (brickType == 1)
+            {
+            }
+            else if (brickType == 2)//Speed brick
             {
                 collision.gameObject.GetComponent<Player>().SpeedBrickModeEnabled();
             }
@@ -33,6 +36,8 @@ public class Bricks : MonoBehaviour
                 Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x, this.transform.position.y), 10);
                 int i = 0;
                 Sprite brickSprite = this.GetComponent<SpriteRenderer>().sprite;
+                player.brickBreak[4 + this.brickType]++;
+
                 while (i < hitColliders.Length)
                 {
                     if (hitColliders[i].tag == "Brick")
@@ -46,12 +51,12 @@ public class Bricks : MonoBehaviour
                 }
             }
 
-            if (brickType == 4)//Solid brick
+            if (brickType != 4)
             {
-
-            }
-            else
-            {
+                if (brickType > 0)
+                {
+                    player.brickBreak[4 + this.brickType]++;
+                }
                 collidedWithPlayer = true;
                 CheckBricksAround();
                 DestroyBrick(true);
@@ -151,6 +156,9 @@ public class Bricks : MonoBehaviour
         Destroy(this.gameObject.GetComponent<BoxCollider2D>());
         yield return new WaitForSeconds(0.15f);
         player.brickBreak[this.color]++;
+        if (collidedWithPlayer)
+        {
+        }
         Destroy(this.gameObject);
         yield break;
     }

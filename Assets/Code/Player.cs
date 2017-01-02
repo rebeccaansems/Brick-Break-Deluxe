@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        brickBreak = new int[5];
+        brickBreak = new int[8];
 
         if (!PlayerPrefs.HasKey("PlayerScore1"))
         {
@@ -45,6 +45,9 @@ public class Player : MonoBehaviour
             PlayerPrefs.SetInt("BricksDestroyed2", 0);
             PlayerPrefs.SetInt("BricksDestroyed3", 0);
             PlayerPrefs.SetInt("BricksDestroyed4", 0);
+            PlayerPrefs.SetInt("BricksDestroyed5", 0);
+            PlayerPrefs.SetInt("BricksDestroyed6", 0);
+            PlayerPrefs.SetInt("BricksDestroyed7", 0);
 
             PlayerPrefs.SetFloat("PlayerDeathLevel", 5);
         }
@@ -67,12 +70,6 @@ public class Player : MonoBehaviour
     void PlayerDied()
     {
         UpdateHighScores();
-
-        PlayerPrefs.SetInt("BricksDestroyed0", PlayerPrefs.GetInt("BricksDestroyed0") + brickBreak[0]);
-        PlayerPrefs.SetInt("BricksDestroyed1", PlayerPrefs.GetInt("BricksDestroyed1") + brickBreak[1]);
-        PlayerPrefs.SetInt("BricksDestroyed2", PlayerPrefs.GetInt("BricksDestroyed2") + brickBreak[2]);
-        PlayerPrefs.SetInt("BricksDestroyed3", PlayerPrefs.GetInt("BricksDestroyed3") + brickBreak[3]);
-        PlayerPrefs.SetInt("BricksDestroyed4", PlayerPrefs.GetInt("BricksDestroyed4") + brickBreak[4]);
 
         PlayerPrefs.SetFloat("PlayerDeathLevel", Mathf.Min(PlayerPrefs.GetFloat("PlayerDeathLevel"), this.transform.position.y));
         
@@ -154,6 +151,15 @@ public class Player : MonoBehaviour
         }
 
         leaderboardScores.Clear();
+
+        PlayerPrefs.SetInt("BricksDestroyed0", PlayerPrefs.GetInt("BricksDestroyed0") + brickBreak[0]);
+        PlayerPrefs.SetInt("BricksDestroyed1", PlayerPrefs.GetInt("BricksDestroyed1") + brickBreak[1]);
+        PlayerPrefs.SetInt("BricksDestroyed2", PlayerPrefs.GetInt("BricksDestroyed2") + brickBreak[2]);
+        PlayerPrefs.SetInt("BricksDestroyed3", PlayerPrefs.GetInt("BricksDestroyed3") + brickBreak[3]);
+        PlayerPrefs.SetInt("BricksDestroyed4", PlayerPrefs.GetInt("BricksDestroyed4") + brickBreak[4]);
+        PlayerPrefs.SetInt("BricksDestroyed5", PlayerPrefs.GetInt("BricksDestroyed5") + brickBreak[5]);
+        PlayerPrefs.SetInt("BricksDestroyed6", PlayerPrefs.GetInt("BricksDestroyed6") + brickBreak[6]);
+        PlayerPrefs.SetInt("BricksDestroyed7", PlayerPrefs.GetInt("BricksDestroyed7") + brickBreak[7]);
     }
 
     private void FixedUpdate()

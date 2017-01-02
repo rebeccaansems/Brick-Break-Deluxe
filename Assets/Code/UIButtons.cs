@@ -7,11 +7,12 @@ using System;
 
 public class UIButtons : MonoBehaviour
 {
-    public Canvas pauseCanvas, optionsCanvas, gameoverCanvas;
+    public Canvas pauseCanvas, optionsCanvas, gameoverCanvas, gameStatsCanvas;
     public Button pauseButton, unpausePanel, returnButton;
     public Text highscoreOverlay;
     public Text highscore1, highscore2, highscore3, highscore4, highscore5;
     public Text GOhighscore1, GOhighscore2, GOhighscore3, GOhighscore4, GOhighscore5;
+    public Text[] stats;
 
     public Image selectedBall, lockedIcon;
     public List<Sprite> ballColors;
@@ -39,6 +40,11 @@ public class UIButtons : MonoBehaviour
             optionsCanvas.enabled = false;
             currentBall = PlayerPrefs.GetInt("CurrentBallSelected");
             selectedBall.sprite = ballColors[currentBall];
+        }
+
+        if (gameStatsCanvas != null)
+        {
+            gameStatsCanvas.enabled = false;
         }
 
         unpausePanel.enabled = false;
@@ -95,6 +101,11 @@ public class UIButtons : MonoBehaviour
             pauseButton.GetComponent<Image>().color = Color.white;
         }
 
+        if (gameStatsCanvas != null)
+        {
+            gameStatsCanvas.enabled = false;
+        }
+
         unpausePanel.enabled = false;
         unpausePanel.GetComponent<Image>().raycastTarget = false;
 
@@ -106,6 +117,7 @@ public class UIButtons : MonoBehaviour
         if (player != null)
         {
             player.GetComponent<Player>().UpdateHighScores();
+            player.GetComponent<Player>().brickBreak = new int[8];
         }
 
         if (highscore1 != null)
@@ -163,6 +175,9 @@ public class UIButtons : MonoBehaviour
         PlayerPrefs.SetInt("BricksDestroyed2", 0);
         PlayerPrefs.SetInt("BricksDestroyed3", 0);
         PlayerPrefs.SetInt("BricksDestroyed4", 0);
+        PlayerPrefs.SetInt("BricksDestroyed5", 0);
+        PlayerPrefs.SetInt("BricksDestroyed6", 0);
+        PlayerPrefs.SetInt("BricksDestroyed7", 0);
 
         PlayerPrefs.SetInt("CurrentBallSelected", 0);
         PlayerPrefs.SetString("UnlockedBalls", "ULLLLL");
@@ -212,5 +227,24 @@ public class UIButtons : MonoBehaviour
             PlayerPrefs.SetInt("CurrentBallSelected", currentBall);
             player.GetComponent<Player>().UpdateBallColor();
         }
+    }
+
+    public void GameStatsButtonPressed()
+    {
+        gameStatsCanvas.enabled = true;
+
+        if(player != null)
+        {
+            player.GetComponent<Player>().UpdateHighScores();
+        }
+
+        stats[0].text = PlayerPrefs.GetInt("BricksDestroyed0").ToString();
+        stats[1].text = PlayerPrefs.GetInt("BricksDestroyed1").ToString();
+        stats[2].text = PlayerPrefs.GetInt("BricksDestroyed2").ToString();
+        stats[3].text = PlayerPrefs.GetInt("BricksDestroyed3").ToString();
+        stats[4].text = PlayerPrefs.GetInt("BricksDestroyed4").ToString();
+        stats[5].text = PlayerPrefs.GetInt("BricksDestroyed5").ToString();
+        stats[6].text = PlayerPrefs.GetInt("BricksDestroyed6").ToString();
+        stats[7].text = PlayerPrefs.GetInt("BricksDestroyed7").ToString();
     }
 }
