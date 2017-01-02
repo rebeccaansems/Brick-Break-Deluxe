@@ -8,12 +8,12 @@ using System;
 public class UIButtons : MonoBehaviour
 {
     public Canvas pauseCanvas, optionsCanvas;
-    public Button pauseButton, unpausePanel;
+    public Button pauseButton, unpausePanel, returnButton;
     public Text highscoreOverlay;
     public Text highscore1, highscore2, highscore3, highscore4, highscore5;
     public Text GOhighscore1, GOhighscore2, GOhighscore3, GOhighscore4, GOhighscore5;
 
-    public Image selectedBall;
+    public Image selectedBall, lockedIcon;
     public List<Sprite> ballColors;
 
     public GameObject deathBar;
@@ -25,6 +25,7 @@ public class UIButtons : MonoBehaviour
         if (!PlayerPrefs.HasKey("CurrentBallSelected"))
         {
             PlayerPrefs.SetInt("CurrentBallSelected", 0);
+            PlayerPrefs.SetString("UnlockedBalls", "ULLLLL");
         }
 
         if (pauseCanvas != null)
@@ -182,7 +183,25 @@ public class UIButtons : MonoBehaviour
             currentBall = ballColors.Count - 1;
         }
 
-        PlayerPrefs.SetInt("CurrentBallSelected", currentBall);
+        string unlockedBalls = PlayerPrefs.GetString("UnlockedBalls");
+        bool isLocked = false;
+
+        if (unlockedBalls.ToCharArray()[currentBall] == 'L')
+        {
+            lockedIcon.enabled = true;
+            isLocked = true;
+            returnButton.interactable = false;
+        }
+        else
+        {
+            lockedIcon.enabled = false;
+            returnButton.interactable = true;
+        }
+
         selectedBall.sprite = ballColors[currentBall];
+        if (!isLocked)
+        {
+            PlayerPrefs.SetInt("CurrentBallSelected", currentBall);
+        }
     }
 }
