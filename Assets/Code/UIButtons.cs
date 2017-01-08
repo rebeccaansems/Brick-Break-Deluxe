@@ -26,6 +26,7 @@ public class UIButtons : MonoBehaviour
         if (!PlayerPrefs.HasKey("TimePlayed"))
         {
             PlayerPrefs.SetInt("TimePlayed", 0);
+            PlayerPrefs.SetInt("GamesPlayed", 0);
             PlayerPrefs.SetInt("CurrentBallSelected", 0);
             PlayerPrefs.SetString("UnlockedBalls", "ULLLLL");
         }
@@ -122,7 +123,7 @@ public class UIButtons : MonoBehaviour
 
         if (player != null)
         {
-            player.GetComponent<Player>().UpdateHighScores();
+            player.GetComponent<Player>().UpdateStats();
             player.GetComponent<Player>().brickBreak = new int[8];
         }
 
@@ -166,6 +167,7 @@ public class UIButtons : MonoBehaviour
 
     public void ResetScoreButtonPressed()
     {
+        PlayerPrefs.SetInt("GamesPlayed", 0);
         PlayerPrefs.SetInt("TimePlayed", 0);
 
         PlayerPrefs.SetInt("PlayerScore1", 0);
@@ -245,7 +247,7 @@ public class UIButtons : MonoBehaviour
 
         if(player != null)
         {
-            player.GetComponent<Player>().UpdateHighScores();
+            player.GetComponent<Player>().UpdateStats();
         }
 
         stats[0].text = PlayerPrefs.GetInt("BricksDestroyed0").ToString();
@@ -257,6 +259,7 @@ public class UIButtons : MonoBehaviour
         stats[6].text = PlayerPrefs.GetInt("BricksDestroyed6").ToString();
         stats[7].text = PlayerPrefs.GetInt("BricksDestroyed7").ToString();
 
-        stats[8].text = PlayerPrefs.GetInt("TimePlayed").ToString();
+        stats[8].text = PlayerPrefs.GetInt("GamesPlayed").ToString();
+        stats[9].text = PlayerPrefs.GetInt("TimePlayed").ToString();
     }
 }

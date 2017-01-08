@@ -69,10 +69,12 @@ public class Player : MonoBehaviour
 
     void PlayerDied()
     {
-        UpdateHighScores();
+        PlayerPrefs.SetInt("GamesPlayed", PlayerPrefs.GetInt("GamesPlayed") + 1);
+
+        UpdateStats();
 
         PlayerPrefs.SetFloat("PlayerDeathLevel", Mathf.Min(PlayerPrefs.GetFloat("PlayerDeathLevel"), this.transform.position.y));
-        
+
         string unlockedBalls = PlayerPrefs.GetString("UnlockedBalls");
         char[] unlockedBallsCharArray = unlockedBalls.ToCharArray();
         if (PlayerPrefs.GetInt("BricksDestroyed0") > 10000)
@@ -115,7 +117,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void UpdateHighScores()
+    public void UpdateStats()
     {
         List<KeyValuePair<string, int>> leaderboardScores = new List<KeyValuePair<string, int>>();
 
@@ -141,7 +143,7 @@ public class Player : MonoBehaviour
         PlayerPrefs.SetString("PlayerDate4", leaderboardScores[2].Key);
         PlayerPrefs.SetString("PlayerDate5", leaderboardScores[1].Key);
 
-        if(gameOverText1 != null)
+        if (gameOverText1 != null)
         {
             gameOverText1.text = PlayerPrefs.GetString("PlayerDate1") + " - " + PlayerPrefs.GetInt("PlayerScore1").ToString("00000000");
             gameOverText2.text = PlayerPrefs.GetString("PlayerDate2") + " - " + PlayerPrefs.GetInt("PlayerScore2").ToString("00000000");

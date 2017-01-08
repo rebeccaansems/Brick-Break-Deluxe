@@ -29,6 +29,7 @@ public class MainScreenBrickSpawn : MonoBehaviour
     {
         GameObject newBrick = Instantiate(brick) as GameObject;
         newBrick.transform.position = location;
+        newBrick.transform.parent = this.transform;
         int brickColorChosen = Random.Range(0, 5);
 
         newBrick.GetComponentInChildren<ParticleSystemRenderer>().material = brickColorsMat[brickColorChosen];

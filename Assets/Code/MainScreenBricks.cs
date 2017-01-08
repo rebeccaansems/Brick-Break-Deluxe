@@ -12,7 +12,7 @@ public class MainScreenBricks : MonoBehaviour
     void Start()
     {
         location = this.transform.position;
-        int secondsUntilDestroy = Random.Range(12, 60);
+        int secondsUntilDestroy = Random.Range(2, 30);
         StartCoroutine(DestroyBrickTimer(secondsUntilDestroy));
     }
 
