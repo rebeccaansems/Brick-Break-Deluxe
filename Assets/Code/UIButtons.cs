@@ -7,8 +7,11 @@ using System;
 
 public class UIButtons : MonoBehaviour
 {
+    public static float sfxVolume, musicVolume;
+
     public Canvas pauseCanvas, optionsCanvas, gameoverCanvas, gameStatsCanvas;
     public Button pauseButton, unpausePanel, returnButton;
+    public Slider sfxSlider, musicSlider;
     public Text highscoreOverlay;
     public Text highscore1, highscore2, highscore3, highscore4, highscore5;
     public Text GOhighscore1, GOhighscore2, GOhighscore3, GOhighscore4, GOhighscore5;
@@ -19,17 +22,32 @@ public class UIButtons : MonoBehaviour
 
     public GameObject deathBar, player;
 
-    private int currentBall, timePlayed;
+    private int currentBall;
+    private bool canChangeVolume = false;
 
     private void Start()
     {
-        if (!PlayerPrefs.HasKey("TimePlayed"))
+        if (!PlayerPrefs.HasKey("GamesPlayed"))
         {
-            PlayerPrefs.SetInt("TimePlayed", 0);
             PlayerPrefs.SetInt("GamesPlayed", 0);
             PlayerPrefs.SetInt("CurrentBallSelected", 0);
+            PlayerPrefs.SetFloat("SFXVolume", 0.5f);
+            PlayerPrefs.SetFloat("MusicVolume", 0.5f);
             PlayerPrefs.SetString("UnlockedBalls", "ULLLLL");
         }
+
+        sfxVolume = PlayerPrefs.GetFloat("SFXVolume");
+        musicVolume = PlayerPrefs.GetFloat("MusicVolume");
+
+        if (sfxSlider != null)
+        {
+            sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume");
+            musicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
+
+            canChangeVolume = true;
+            AdjustVolume();
+        }
+
 
         if (pauseCanvas != null)
         {
@@ -61,7 +79,6 @@ public class UIButtons : MonoBehaviour
             pauseButton.enabled = true;
             pauseCanvas.enabled = true;
             Time.timeScale = 0;
-            timePlayed = 0;
             UpdateHighScores();
         }
     }
@@ -117,10 +134,6 @@ public class UIButtons : MonoBehaviour
 
     void UpdateHighScores()
     {
-        timePlayed = (int)(Time.unscaledTime/60) - timePlayed;
-        PlayerPrefs.SetInt("TimePlayed", PlayerPrefs.GetInt("TimePlayed")+timePlayed);
-        timePlayed = (int)(Time.unscaledTime/60);
-
         if (player != null)
         {
             player.GetComponent<Player>().UpdateStats();
@@ -168,7 +181,6 @@ public class UIButtons : MonoBehaviour
     public void ResetScoreButtonPressed()
     {
         PlayerPrefs.SetInt("GamesPlayed", 0);
-        PlayerPrefs.SetInt("TimePlayed", 0);
 
         PlayerPrefs.SetInt("PlayerScore1", 0);
         PlayerPrefs.SetInt("PlayerScore2", 0);
@@ -245,7 +257,7 @@ public class UIButtons : MonoBehaviour
     {
         gameStatsCanvas.enabled = true;
 
-        if(player != null)
+        if (player != null)
         {
             player.GetComponent<Player>().UpdateStats();
         }
@@ -258,8 +270,18 @@ public class UIButtons : MonoBehaviour
         stats[5].text = PlayerPrefs.GetInt("BricksDestroyed5").ToString();
         stats[6].text = PlayerPrefs.GetInt("BricksDestroyed6").ToString();
         stats[7].text = PlayerPrefs.GetInt("BricksDestroyed7").ToString();
-
         stats[8].text = PlayerPrefs.GetInt("GamesPlayed").ToString();
-        stats[9].text = PlayerPrefs.GetInt("TimePlayed").ToString();
+    }
+
+    public void AdjustVolume()
+    {
+        if (canChangeVolume)
+        {
+            sfxVolume = sfxSlider.value;
+            PlayerPrefs.SetFloat("SFXVolume", sfxSlider.value);
+
+            musicVolume = musicSlider.value;
+            PlayerPrefs.SetFloat("MusicVolume", musicSlider.value);
+        }
     }
 }

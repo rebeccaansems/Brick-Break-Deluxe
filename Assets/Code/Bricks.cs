@@ -13,13 +13,13 @@ public class Bricks : MonoBehaviour
     private Player player;
     private int radius = 1;
     private bool collidedWithPlayer = false, wasVisible = false;
-    private AudioSource audio;
+    private AudioSource aud;
 
     // Use this for initialization
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        audio = GetComponent<AudioSource>();
+        aud = GetComponent<AudioSource>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -155,17 +155,19 @@ public class Bricks : MonoBehaviour
         yield return new WaitForSeconds(Random.Range(0.005f, 0.250f));
         particles.Play();
 
-        audio.volume = Random.Range(0.75f, 1);
-        audio.pitch = Random.Range(0.75f, 1);
-        AudioSource.PlayClipAtPoint(audio.clip, transform.position);
+        float volume = Random.Range(UIButtons.sfxVolume - 0.5f, UIButtons.sfxVolume + 0.5f);
+        if (UIButtons.sfxVolume == 0)
+        {
+            volume = 0;
+        }
+
+        aud.pitch = Random.Range(0.5f, 2);
+        AudioSource.PlayClipAtPoint(aud.clip, transform.position, volume);
 
         Destroy(this.gameObject.GetComponent<SpriteRenderer>());
         Destroy(this.gameObject.GetComponent<BoxCollider2D>());
-        yield return new WaitForSeconds(audio.clip.length*2);
+        yield return new WaitForSeconds(aud.clip.length * 2);
         player.brickBreak[this.color]++;
-        if (collidedWithPlayer)
-        {
-        }
         Destroy(this.gameObject);
         yield break;
     }
