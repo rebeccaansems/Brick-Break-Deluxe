@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 {
     public int score = 0;
     public int[] brickBreak;
-    public Text scoreText, highScoreText, gameOverText1, gameOverText2, gameOverText3, gameOverText4, gameOverText5;
+    public Text scoreText, highScoreText, unlockBallText, gameOverText1, gameOverText2, gameOverText3, gameOverText4, gameOverText5;
     public float speed, gravityModifier;
     public bool speedBrickEffect = false;
     public ParticleSystem particles;
@@ -18,8 +18,13 @@ public class Player : MonoBehaviour
     public Canvas gameOverScreen;
     public List<Sprite> allPossibleBalls;
     public List<Color> particleColors;
+    public Slider unlockSlider;
+    public Image nextBallToUnlockImage;
 
     private Vector3 gravityOriginal;
+    private int[] unlockedBallThresholds = new int[5] { 500, 1000, 2500, 5000, 10000 };
+    private int[] bricksDestroyed;
+    private char[] unlockedBallsCharArray;
 
     // Use this for initialization
     void Start()
@@ -76,31 +81,33 @@ public class Player : MonoBehaviour
         PlayerPrefs.SetFloat("PlayerDeathLevel", Mathf.Min(PlayerPrefs.GetFloat("PlayerDeathLevel"), this.transform.position.y));
 
         string unlockedBalls = PlayerPrefs.GetString("UnlockedBalls");
-        char[] unlockedBallsCharArray = unlockedBalls.ToCharArray();
-        if (PlayerPrefs.GetInt("BricksDestroyed0") > 10000)
+        unlockedBallsCharArray = unlockedBalls.ToCharArray();
+        bricksDestroyed = new int[5] { PlayerPrefs.GetInt("BricksDestroyed0"), PlayerPrefs.GetInt("BricksDestroyed1"),
+            PlayerPrefs.GetInt("BricksDestroyed2"), PlayerPrefs.GetInt("BricksDestroyed3"), PlayerPrefs.GetInt("BricksDestroyed4") };
+
+        if (bricksDestroyed[0] > unlockedBallThresholds[0])
         {
             unlockedBallsCharArray[1] = 'U';
         }
-        if (PlayerPrefs.GetInt("BricksDestroyed1") > 10000)
+        if (bricksDestroyed[1] > unlockedBallThresholds[1])
         {
             unlockedBallsCharArray[2] = 'U';
         }
-        if (PlayerPrefs.GetInt("BricksDestroyed2") > 10000)
+        if (bricksDestroyed[2] > unlockedBallThresholds[2])
         {
             unlockedBallsCharArray[3] = 'U';
         }
-        if (PlayerPrefs.GetInt("BricksDestroyed3") > 10000)
+        if (bricksDestroyed[3] > unlockedBallThresholds[3])
         {
             unlockedBallsCharArray[4] = 'U';
         }
-        if (PlayerPrefs.GetInt("BricksDestroyed4") > 10000)
+        if (bricksDestroyed[4] > unlockedBallThresholds[4])
         {
             unlockedBallsCharArray[5] = 'U';
         }
 
         unlockedBalls = new string(unlockedBallsCharArray);
         PlayerPrefs.SetString("UnlockedBalls", unlockedBalls);
-
 
         if (highScoreText != null)
         {
@@ -110,6 +117,43 @@ public class Player : MonoBehaviour
         PlayerPrefs.Save();
 
         Time.timeScale = 0;
+
+        if (gameOverText1 != null)
+        {
+            gameOverText1.text = PlayerPrefs.GetString("PlayerDate1") + " - " + PlayerPrefs.GetInt("PlayerScore1").ToString("00000000");
+            gameOverText2.text = PlayerPrefs.GetString("PlayerDate2") + " - " + PlayerPrefs.GetInt("PlayerScore2").ToString("00000000");
+            gameOverText3.text = PlayerPrefs.GetString("PlayerDate3") + " - " + PlayerPrefs.GetInt("PlayerScore3").ToString("00000000");
+            gameOverText4.text = PlayerPrefs.GetString("PlayerDate4") + " - " + PlayerPrefs.GetInt("PlayerScore4").ToString("00000000");
+            gameOverText5.text = PlayerPrefs.GetString("PlayerDate5") + " - " + PlayerPrefs.GetInt("PlayerScore5").ToString("00000000");
+        }
+
+        if (unlockBallText != null)
+        {
+            int nextBallToUnlock = -1;
+            for (int i = 1; i < unlockedBallsCharArray.Length; i++)
+            {
+                if (unlockedBallsCharArray[i] == 'L')
+                {
+                    nextBallToUnlock = i - 1;
+                    break;
+                }
+            }
+
+            if (nextBallToUnlock != -1)
+            {
+                unlockBallText.text = bricksDestroyed[nextBallToUnlock] + "/" + unlockedBallThresholds[nextBallToUnlock] + " TO NEXT UNLOCKED BALL";
+                unlockSlider.maxValue = unlockedBallThresholds[nextBallToUnlock];
+                unlockSlider.value = bricksDestroyed[nextBallToUnlock];
+                nextBallToUnlockImage.sprite = allPossibleBalls[nextBallToUnlock+1];
+            }
+            else
+            {
+                unlockBallText.text = "ALL BALLS ARE UNLOCKED";
+                unlockSlider.maxValue = 100;
+                unlockSlider.value = 100;
+                nextBallToUnlockImage.enabled = false;
+            }
+        }
 
         if (gameOverScreen != null)
         {
@@ -142,15 +186,6 @@ public class Player : MonoBehaviour
         PlayerPrefs.SetString("PlayerDate3", leaderboardScores[3].Key);
         PlayerPrefs.SetString("PlayerDate4", leaderboardScores[2].Key);
         PlayerPrefs.SetString("PlayerDate5", leaderboardScores[1].Key);
-
-        if (gameOverText1 != null)
-        {
-            gameOverText1.text = PlayerPrefs.GetString("PlayerDate1") + " - " + PlayerPrefs.GetInt("PlayerScore1").ToString("00000000");
-            gameOverText2.text = PlayerPrefs.GetString("PlayerDate2") + " - " + PlayerPrefs.GetInt("PlayerScore2").ToString("00000000");
-            gameOverText3.text = PlayerPrefs.GetString("PlayerDate3") + " - " + PlayerPrefs.GetInt("PlayerScore3").ToString("00000000");
-            gameOverText4.text = PlayerPrefs.GetString("PlayerDate4") + " - " + PlayerPrefs.GetInt("PlayerScore4").ToString("00000000");
-            gameOverText5.text = PlayerPrefs.GetString("PlayerDate5") + " - " + PlayerPrefs.GetInt("PlayerScore5").ToString("00000000");
-        }
 
         leaderboardScores.Clear();
 
