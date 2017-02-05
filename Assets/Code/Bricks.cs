@@ -5,17 +5,23 @@ using UnityEngine;
 public class Bricks : MonoBehaviour
 {
     public ParticleSystem particles;
-    //brickType: 0-nothing, 1-bomb, 2-speed, 3-color bomb, 4-solid
+    //brickType: 0-normal, 1-bomb, 2-speed, 3-color bomb, 4-solid
     public int color, brickType;
     public Sprite brickBase;
     public Material brickBaseParticles;
+    public AudioClip[] audioClips;
 
     private Player player;
     private int radius = 1;
     private bool collidedWithPlayer = false, wasVisible = false;
     private AudioSource aud;
+    private AudioClip audioClip;
+    
+    private void Awake()
+    {
+        audioClip = audioClips[brickType];
+    }
 
-    // Use this for initialization
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
@@ -160,13 +166,13 @@ public class Bricks : MonoBehaviour
         {
             volume = 0;
         }
-
+        
         aud.pitch = Random.Range(0.5f, 2);
-        AudioSource.PlayClipAtPoint(aud.clip, transform.position, volume);
+        AudioSource.PlayClipAtPoint(audioClip, transform.position, volume);
 
         Destroy(this.gameObject.GetComponent<SpriteRenderer>());
         Destroy(this.gameObject.GetComponent<BoxCollider2D>());
-        yield return new WaitForSeconds(aud.clip.length * 2);
+        yield return new WaitForSeconds(audioClip.length*2);
         player.brickBreak[this.color]++;
         Destroy(this.gameObject);
         yield break;
