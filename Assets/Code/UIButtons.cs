@@ -9,15 +9,21 @@ public class UIButtons : MonoBehaviour
 {
     public static float sfxVolume, musicVolume;
 
+    public AudioClip buttonPress;
+
     public Canvas pauseCanvas, optionsCanvas, gameoverCanvas, gameStatsCanvas;
-    public Button pauseButton, unpausePanel, returnButton;
+
+    public Button pauseButton, unpausePanel, returnButton, gameStatsButton;
+
     public Slider sfxSlider, musicSlider;
+
     public Text highscoreOverlay;
     public Text highscore1, highscore2, highscore3, highscore4, highscore5;
     public Text GOhighscore1, GOhighscore2, GOhighscore3, GOhighscore4, GOhighscore5;
     public Text[] stats;
 
     public Image selectedBall, lockedIcon;
+
     public List<Sprite> ballColors;
 
     public GameObject deathBar, player;
@@ -238,18 +244,36 @@ public class UIButtons : MonoBehaviour
             lockedIcon.enabled = true;
             isLocked = true;
             returnButton.interactable = false;
+            gameStatsButton.interactable = false;
+            unpausePanel.interactable = false;
+
+            if (pauseButton != null)
+            {
+                pauseButton.interactable = false;
+            }
         }
         else
         {
             lockedIcon.enabled = false;
             returnButton.interactable = true;
+            gameStatsButton.interactable = true;
+            unpausePanel.interactable = true;
+
+            if (pauseButton != null)
+            {
+                pauseButton.interactable = true;
+            }
         }
 
         selectedBall.sprite = ballColors[currentBall];
         if (!isLocked)
         {
             PlayerPrefs.SetInt("CurrentBallSelected", currentBall);
-            player.GetComponent<Player>().UpdateBallColor();
+
+            if (player != null)
+            {
+                player.GetComponent<Player>().UpdateBallColor();
+            }
         }
     }
 
@@ -271,6 +295,11 @@ public class UIButtons : MonoBehaviour
         stats[6].text = PlayerPrefs.GetInt("BricksDestroyed6").ToString();
         stats[7].text = PlayerPrefs.GetInt("BricksDestroyed7").ToString();
         stats[8].text = PlayerPrefs.GetInt("GamesPlayed").ToString();
+    }
+
+    public void PlayButtonNoise()
+    {
+        GetComponent<AudioSource>().PlayOneShot(buttonPress, sfxVolume);
     }
 
     public void AdjustVolume()
