@@ -149,7 +149,7 @@ public class Player : MonoBehaviour
             else
             {
                 unlockBallText.text = "ALL BALLS ARE UNLOCKED";
-                unlockSlider.maxValue = 100;
+                unlockSlider.maxValue = 50;
                 unlockSlider.value = 100;
                 nextBallToUnlockImage.enabled = false;
             }
