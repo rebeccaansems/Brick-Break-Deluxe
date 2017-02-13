@@ -13,9 +13,9 @@ public class UIButtons : MonoBehaviour
 
     public Canvas pauseCanvas, optionsCanvas, gameoverCanvas, gameStatsCanvas;
 
-    public Button pauseButton, unpausePanel, returnButton, gameStatsButton;
+    public Button pauseButton, unpausePanel, returnButton, gameStatsButton, restartGameButton;
 
-    public Slider sfxSlider, musicSlider;
+    public Slider sfxSlider, musicSlider, progressBallSlider;
 
     public Text highscoreOverlay;
     public Text highscore1, highscore2, highscore3, highscore4, highscore5;
@@ -30,6 +30,8 @@ public class UIButtons : MonoBehaviour
 
     private int currentBall;
     private bool canChangeVolume = false;
+    private int[] unlockedBallThresholds = new int[6] {1, 500, 1000, 2500, 5000, 10000 }, bricksDestroyed;
+
 
     private void Start()
     {
@@ -179,6 +181,15 @@ public class UIButtons : MonoBehaviour
 
         unpausePanel.enabled = true;
         unpausePanel.GetComponent<Image>().raycastTarget = true;
+        
+        if(progressBallSlider != null)
+        {
+            bricksDestroyed = new int[6] {1, PlayerPrefs.GetInt("BricksDestroyed0"), PlayerPrefs.GetInt("BricksDestroyed1"),
+            PlayerPrefs.GetInt("BricksDestroyed2"), PlayerPrefs.GetInt("BricksDestroyed3"), PlayerPrefs.GetInt("BricksDestroyed4") };
+
+            progressBallSlider.maxValue = unlockedBallThresholds[currentBall];
+            progressBallSlider.value = bricksDestroyed[currentBall];
+        }
 
         optionsCanvas.enabled = true;
         Time.timeScale = 0;
@@ -225,6 +236,7 @@ public class UIButtons : MonoBehaviour
 
     public void BallDirectionButtonPressed(int direction)
     {
+
         currentBall = currentBall + direction;
 
         if (currentBall > ballColors.Count - 1)
@@ -235,6 +247,9 @@ public class UIButtons : MonoBehaviour
         {
             currentBall = ballColors.Count - 1;
         }
+
+        progressBallSlider.maxValue = unlockedBallThresholds[currentBall];
+        progressBallSlider.value = bricksDestroyed[currentBall];
 
         string unlockedBalls = PlayerPrefs.GetString("UnlockedBalls");
         bool isLocked = false;
@@ -250,6 +265,7 @@ public class UIButtons : MonoBehaviour
             if (pauseButton != null)
             {
                 pauseButton.interactable = false;
+                restartGameButton.interactable = false;
             }
         }
         else
@@ -262,6 +278,7 @@ public class UIButtons : MonoBehaviour
             if (pauseButton != null)
             {
                 pauseButton.interactable = true;
+                restartGameButton.interactable = true;
             }
         }
 
@@ -295,6 +312,11 @@ public class UIButtons : MonoBehaviour
         stats[6].text = PlayerPrefs.GetInt("BricksDestroyed6").ToString();
         stats[7].text = PlayerPrefs.GetInt("BricksDestroyed7").ToString();
         stats[8].text = PlayerPrefs.GetInt("GamesPlayed").ToString();
+    }
+
+    public void RestartGameButton()
+    {
+        SceneManager.LoadScene(1);
     }
 
     public void PlayButtonNoise()
