@@ -34,12 +34,13 @@ public class SpawnBricks : MonoBehaviour
     public void SpawnBrick()
     {
         int brickCounter = 0;
-        int brickChance = Mathf.Max(1000 - (rowNumber / 10), 500);
-        int blankBrickChance = Mathf.Max(100 - (rowNumber / 50), 50);
-        int brickOrOther = Random.Range(0, 1000);
 
         for (int i = 1; i < 64; i++)
         {
+            int brickChance = Mathf.Max(10000 - (rowNumber / 10), 5000);
+            int blankBrickChance = Mathf.Max(100 - (rowNumber / 50), 50);
+            int brickOrOther = Random.Range(0, 10000);
+
             if (brickOrOther < brickChance)//brick
             {
                 xCurrent += 1.2f * xChange;

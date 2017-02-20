@@ -32,6 +32,14 @@ public class UIButtons : MonoBehaviour
     private bool canChangeVolume = false;
     private int[] unlockedBallThresholds = new int[6] {1, 500, 1000, 2500, 5000, 10000 }, bricksDestroyed;
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Debug.Log(Screen.height + "-" + DateTime.Now.Hour + "" + DateTime.Now.Minute + "" + DateTime.Now.Second + ".png");
+            Application.CaptureScreenshot(Screen.height+"-"+DateTime.Now.Hour+""+ DateTime.Now.Minute+""+ DateTime.Now.Second + ".png");
+        }
+    }
 
     private void Start()
     {
