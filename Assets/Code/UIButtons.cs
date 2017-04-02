@@ -81,15 +81,17 @@ public class UIButtons : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (pauseCanvas.enabled || optionsCanvas.enabled || gameStatsCanvas.enabled)
+            if ((pauseCanvas != null && pauseCanvas.enabled) ||
+                (optionsCanvas != null && optionsCanvas.enabled) ||
+                (gameStatsCanvas != null && gameStatsCanvas.enabled))
             {
                 OnReturnButtonPressed();
             }
-            else if (gameoverCanvas.enabled)
+            else if (gameoverCanvas != null && gameoverCanvas.enabled)
             {
                 OnReplayButtonPressed();
             }
-            else if (!pauseCanvas.enabled)
+            else if (pauseCanvas != null && !pauseCanvas.enabled)
             {
                 OnPauseButtonPressed();
             }
@@ -153,39 +155,42 @@ public class UIButtons : MonoBehaviour
 
     public void OnReturnButtonPressed()
     {
-        if (pauseCanvas != null)
+        if (pauseButton.interactable)
         {
-            pauseCanvas.enabled = false;
-        }
-
-        if (optionsCanvas != null)
-        {
-            optionsCanvas.enabled = false;
-        }
-
-        if (gameStatsCanvas != null)
-        {
-            gameStatsCanvas.enabled = false;
-        }
-
-        if (player.GetComponent<Player>().playerIsDead)
-        {
-            unpausePanel.enabled = false;
-            unpausePanel.GetComponent<Image>().raycastTarget = false;
-
-            gameoverCanvas.enabled = true;
-        }
-        else
-        {
-            if (pauseButton != null)
+            if (pauseCanvas != null)
             {
-                pauseButton.GetComponent<Image>().color = Color.white;
+                pauseCanvas.enabled = false;
             }
 
-            unpausePanel.enabled = false;
-            unpausePanel.GetComponent<Image>().raycastTarget = false;
+            if (optionsCanvas != null)
+            {
+                optionsCanvas.enabled = false;
+            }
 
-            Time.timeScale = 1;
+            if (gameStatsCanvas != null)
+            {
+                gameStatsCanvas.enabled = false;
+            }
+
+            if (player != null && player.GetComponent<Player>().playerIsDead)
+            {
+                unpausePanel.enabled = false;
+                unpausePanel.GetComponent<Image>().raycastTarget = false;
+
+                gameoverCanvas.enabled = true;
+            }
+            else
+            {
+                if (pauseButton != null && pauseButton.GetComponent<Image>() != null)
+                {
+                    pauseButton.GetComponent<Image>().color = Color.white;
+                }
+
+                unpausePanel.enabled = false;
+                unpausePanel.GetComponent<Image>().raycastTarget = false;
+
+                Time.timeScale = 1;
+            }
         }
     }
 
@@ -296,6 +301,10 @@ public class UIButtons : MonoBehaviour
             if (pauseButton != null)
             {
                 pauseButton.interactable = false;
+            }
+
+            if(restartGameButton != null)
+            {
                 restartGameButton.interactable = false;
             }
         }
@@ -309,6 +318,10 @@ public class UIButtons : MonoBehaviour
             if (pauseButton != null)
             {
                 pauseButton.interactable = true;
+            }
+
+            if (restartGameButton != null)
+            {
                 restartGameButton.interactable = true;
             }
         }
@@ -351,7 +364,11 @@ public class UIButtons : MonoBehaviour
         {
             gameoverCanvas.enabled = true;
         }
-        pauseButton.GetComponent<Image>().color = Color.grey;
+
+        if(pauseButton.GetComponent<Image>() != null)
+        {
+            pauseButton.GetComponent<Image>().color = Color.grey;
+        }
     }
 
     public void OnStart()
