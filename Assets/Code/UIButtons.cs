@@ -55,7 +55,6 @@ public class UIButtons : MonoBehaviour
             AdjustVolume();
         }
 
-
         if (pauseCanvas != null)
         {
             pauseCanvas.enabled = false;
@@ -78,12 +77,30 @@ public class UIButtons : MonoBehaviour
         unpausePanel.GetComponent<Image>().raycastTarget = false;
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (pauseCanvas.enabled || optionsCanvas.enabled || gameStatsCanvas.enabled)
+            {
+                OnReturnButtonPressed();
+            }
+            else if (gameoverCanvas.enabled)
+            {
+                OnReplayButtonPressed();
+            }
+            else if (!pauseCanvas.enabled)
+            {
+                OnPauseButtonPressed();
+            }
+        }
+    }
+
     void OnApplicationPause(bool pause)
     {
         if (pause)
         {
             pauseButton.GetComponent<Image>().color = Color.grey;
-            pauseButton.enabled = true;
             pauseButton.enabled = true;
             pauseCanvas.enabled = true;
             Time.timeScale = 0;
@@ -113,7 +130,7 @@ public class UIButtons : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void PauseButtonPressed()
+    public void OnPauseButtonPressed()
     {
         if (!gameoverCanvas.enabled)
         {
@@ -123,7 +140,7 @@ public class UIButtons : MonoBehaviour
 
             if (Time.timeScale == 0)
             {
-                ReturnButtonPressed();
+                OnReturnButtonPressed();
             }
             else
             {
@@ -134,7 +151,7 @@ public class UIButtons : MonoBehaviour
         }
     }
 
-    public void ReturnButtonPressed()
+    public void OnReturnButtonPressed()
     {
         if (pauseCanvas != null)
         {
@@ -172,7 +189,7 @@ public class UIButtons : MonoBehaviour
         }
     }
 
-    public void StartGame()
+    public void OnReplayButtonPressed()
     {
         SceneManager.LoadScene(1);
     }
@@ -246,7 +263,7 @@ public class UIButtons : MonoBehaviour
         }
 
         UpdateHighScores();
-        ReturnButtonPressed();
+        OnReturnButtonPressed();
     }
 
     public void BallDirectionButtonPressed(int direction)
