@@ -8,9 +8,11 @@ public class Player : MonoBehaviour
 {
     public int score = 0;
     public int[] brickBreak;
-    public Text scoreText, highScoreText, unlockBallText, gameOverText1, gameOverText2, gameOverText3, gameOverText4, gameOverText5;
     public float speed, gravityModifier;
     public bool speedBrickEffect = false;
+    public bool playerIsDead = false;
+
+    public Text scoreText, highScoreText, unlockBallText, gameOverText1, gameOverText2, gameOverText3, gameOverText4, gameOverText5;
     public ParticleSystem particles;
     public GameObject deathBar;
     public PhysicsMaterial2D noBounce, normalBounce;
@@ -19,16 +21,20 @@ public class Player : MonoBehaviour
     public List<Color> particleColors;
     public Slider unlockSlider;
     public Image nextBallToUnlockImage;
+    public UIButtons uiButtons;
 
-    private Vector3 gravityOriginal;
     private int[] unlockedBallThresholds = new int[5] { 500, 1000, 2500, 5000, 10000 };
     private int[] bricksDestroyed;
     private char[] unlockedBallsCharArray;
 
-    // Use this for initialization
+    private Vector3 gravityOriginal;
+    
     void Start()
     {
+        playerIsDead = false;
         brickBreak = new int[8];
+
+        uiButtons.OnStart();
 
         if (!PlayerPrefs.HasKey("PlayerScore1"))
         {
@@ -62,7 +68,7 @@ public class Player : MonoBehaviour
         highScoreText.text = "HIGH SCORE: " + PlayerPrefs.GetInt("PlayerScore1").ToString("00000000");
 
         Time.timeScale = 1;
-        gameOverScreen.enabled = false;
+        //gameOverScreen.enabled = false;
         UpdateBallColor();
     }
 
@@ -73,6 +79,10 @@ public class Player : MonoBehaviour
 
     void PlayerDied()
     {
+        playerIsDead = true;
+
+        uiButtons.OnGameOver();
+
         PlayerPrefs.SetInt("GamesPlayed", PlayerPrefs.GetInt("GamesPlayed") + 1);
 
         UpdateStats();
@@ -152,11 +162,6 @@ public class Player : MonoBehaviour
                 unlockSlider.value = 100;
                 nextBallToUnlockImage.enabled = false;
             }
-        }
-
-        if (gameOverScreen != null)
-        {
-            gameOverScreen.enabled = true;
         }
     }
 

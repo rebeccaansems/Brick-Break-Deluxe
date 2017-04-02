@@ -30,18 +30,9 @@ public class UIButtons : MonoBehaviour
 
     private int currentBall;
     private bool canChangeVolume = false;
-    private int[] unlockedBallThresholds = new int[6] {1, 500, 1000, 2500, 5000, 10000 }, bricksDestroyed;
+    private int[] unlockedBallThresholds = new int[6] { 1, 500, 1000, 2500, 5000, 10000 }, bricksDestroyed;
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Debug.Log(Screen.height + "-" + DateTime.Now.Hour + "" + DateTime.Now.Minute + "" + DateTime.Now.Second + ".png");
-            Application.CaptureScreenshot(Screen.height+"-"+DateTime.Now.Hour+""+ DateTime.Now.Minute+""+ DateTime.Now.Second + ".png");
-        }
-    }
-
-    private void Start()
+    void Start()
     {
         if (!PlayerPrefs.HasKey("GamesPlayed"))
         {
@@ -87,7 +78,7 @@ public class UIButtons : MonoBehaviour
         unpausePanel.GetComponent<Image>().raycastTarget = false;
     }
 
-    private void OnApplicationPause(bool pause)
+    void OnApplicationPause(bool pause)
     {
         if (pause)
         {
@@ -98,55 +89,6 @@ public class UIButtons : MonoBehaviour
             Time.timeScale = 0;
             UpdateHighScores();
         }
-    }
-
-    public void PauseButtonPressed()
-    {
-        if (!gameoverCanvas.enabled)
-        {
-            pauseButton.GetComponent<Image>().color = Color.grey;
-            unpausePanel.enabled = true;
-            unpausePanel.GetComponent<Image>().raycastTarget = true;
-
-            if (Time.timeScale == 0)
-            {
-                ReturnButtonPressed();
-            }
-            else
-            {
-                UpdateHighScores();
-                pauseCanvas.enabled = true;
-                Time.timeScale = 0;
-           } 
-        }
-    }
-
-    public void ReturnButtonPressed()
-    {
-        if (pauseCanvas != null)
-        {
-            pauseCanvas.enabled = false;
-        }
-
-        if (optionsCanvas != null)
-        {
-            optionsCanvas.enabled = false;
-        }
-
-        if (pauseButton != null)
-        {
-            pauseButton.GetComponent<Image>().color = Color.white;
-        }
-
-        if (gameStatsCanvas != null)
-        {
-            gameStatsCanvas.enabled = false;
-        }
-
-        unpausePanel.enabled = false;
-        unpausePanel.GetComponent<Image>().raycastTarget = false;
-
-        Time.timeScale = 1;
     }
 
     void UpdateHighScores()
@@ -171,6 +113,65 @@ public class UIButtons : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    public void PauseButtonPressed()
+    {
+        if (!gameoverCanvas.enabled)
+        {
+            pauseButton.GetComponent<Image>().color = Color.grey;
+            unpausePanel.enabled = true;
+            unpausePanel.GetComponent<Image>().raycastTarget = true;
+
+            if (Time.timeScale == 0)
+            {
+                ReturnButtonPressed();
+            }
+            else
+            {
+                UpdateHighScores();
+                pauseCanvas.enabled = true;
+                Time.timeScale = 0;
+            }
+        }
+    }
+
+    public void ReturnButtonPressed()
+    {
+        if (pauseCanvas != null)
+        {
+            pauseCanvas.enabled = false;
+        }
+
+        if (optionsCanvas != null)
+        {
+            optionsCanvas.enabled = false;
+        }
+
+        if (gameStatsCanvas != null)
+        {
+            gameStatsCanvas.enabled = false;
+        }
+
+        if (player.GetComponent<Player>().playerIsDead)
+        {
+            unpausePanel.enabled = false;
+            unpausePanel.GetComponent<Image>().raycastTarget = false;
+
+            gameoverCanvas.enabled = true;
+        }
+        else
+        {
+            if (pauseButton != null)
+            {
+                pauseButton.GetComponent<Image>().color = Color.white;
+            }
+
+            unpausePanel.enabled = false;
+            unpausePanel.GetComponent<Image>().raycastTarget = false;
+
+            Time.timeScale = 1;
+        }
+    }
+
     public void StartGame()
     {
         SceneManager.LoadScene(1);
@@ -188,14 +189,14 @@ public class UIButtons : MonoBehaviour
             pauseCanvas.enabled = false;
         }
 
-        if(gameoverCanvas != null)
+        if (gameoverCanvas != null)
         {
             gameoverCanvas.enabled = false;
         }
 
         unpausePanel.enabled = true;
         unpausePanel.GetComponent<Image>().raycastTarget = true;
-        
+
         if (progressBallSlider != null)
         {
             bricksDestroyed = new int[6] {1, PlayerPrefs.GetInt("BricksDestroyed0"), PlayerPrefs.GetInt("BricksDestroyed1"),
@@ -250,7 +251,6 @@ public class UIButtons : MonoBehaviour
 
     public void BallDirectionButtonPressed(int direction)
     {
-
         currentBall = currentBall + direction;
 
         if (currentBall > ballColors.Count - 1)
@@ -326,6 +326,24 @@ public class UIButtons : MonoBehaviour
         stats[6].text = PlayerPrefs.GetInt("BricksDestroyed6").ToString();
         stats[7].text = PlayerPrefs.GetInt("BricksDestroyed7").ToString();
         stats[8].text = PlayerPrefs.GetInt("GamesPlayed").ToString();
+    }
+
+    public void OnGameOver()
+    {
+        if (gameoverCanvas != null)
+        {
+            gameoverCanvas.enabled = true;
+        }
+        pauseButton.GetComponent<Image>().color = Color.grey;
+    }
+
+    public void OnStart()
+    {
+        if (gameoverCanvas != null)
+        {
+            gameoverCanvas.enabled = false;
+        }
+        pauseButton.GetComponent<Image>().color = Color.white;
     }
 
     public void RestartGameButton()
