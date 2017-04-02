@@ -14,7 +14,7 @@ public class SpawnBricks : MonoBehaviour
     private void Start()
     {
         yChange = 0.75f;
-        
+
         SpawnBrick();
         StartCoroutine(BrickSpawnTimer());
     }
@@ -118,6 +118,7 @@ public class SpawnBricks : MonoBehaviour
                 rowNumber++;
 
                 brickOrOther = Random.Range(0, 20);
+                brickCounter = 0;
             }
         }
     }
