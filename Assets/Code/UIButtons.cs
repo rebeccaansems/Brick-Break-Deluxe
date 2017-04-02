@@ -91,6 +91,7 @@ public class UIButtons : MonoBehaviour
     {
         if (pause)
         {
+            pauseButton.GetComponent<Image>().color = Color.grey;
             pauseButton.enabled = true;
             pauseButton.enabled = true;
             pauseCanvas.enabled = true;
@@ -116,7 +117,7 @@ public class UIButtons : MonoBehaviour
                 UpdateHighScores();
                 pauseCanvas.enabled = true;
                 Time.timeScale = 0;
-            }
+           } 
         }
     }
 
@@ -187,10 +188,15 @@ public class UIButtons : MonoBehaviour
             pauseCanvas.enabled = false;
         }
 
+        if(gameoverCanvas != null)
+        {
+            gameoverCanvas.enabled = false;
+        }
+
         unpausePanel.enabled = true;
         unpausePanel.GetComponent<Image>().raycastTarget = true;
         
-        if(progressBallSlider != null)
+        if (progressBallSlider != null)
         {
             bricksDestroyed = new int[6] {1, PlayerPrefs.GetInt("BricksDestroyed0"), PlayerPrefs.GetInt("BricksDestroyed1"),
             PlayerPrefs.GetInt("BricksDestroyed2"), PlayerPrefs.GetInt("BricksDestroyed3"), PlayerPrefs.GetInt("BricksDestroyed4") };
