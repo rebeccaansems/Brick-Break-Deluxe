@@ -401,4 +401,14 @@ public class UIButtons : MonoBehaviour
             PlayerPrefs.SetFloat("MusicVolume", musicSlider.value);
         }
     }
+
+    //Main Screen
+
+    public void OnMainMenuPlayPressed()
+    {
+    }
+
+    public void OnMainMenuOptionsPressed()
+    {
+    }
 }

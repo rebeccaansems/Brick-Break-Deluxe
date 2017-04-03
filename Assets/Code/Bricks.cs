@@ -16,7 +16,7 @@ public class Bricks : MonoBehaviour
     private bool collidedWithPlayer = false, wasVisible = false;
     private AudioSource aud;
     private AudioClip audioClip;
-    
+
     private void Awake()
     {
         audioClip = audioClips[brickType];
@@ -166,13 +166,13 @@ public class Bricks : MonoBehaviour
         {
             volume = 0;
         }
-        
+
         aud.pitch = Random.Range(0.5f, 2);
         AudioSource.PlayClipAtPoint(audioClip, transform.position, volume);
 
         Destroy(this.gameObject.GetComponent<SpriteRenderer>());
         Destroy(this.gameObject.GetComponent<BoxCollider2D>());
-        yield return new WaitForSeconds(audioClip.length*2);
+        yield return new WaitForSeconds(audioClip.length * 2);
         player.brickBreak[this.color]++;
         Destroy(this.gameObject);
         yield break;
