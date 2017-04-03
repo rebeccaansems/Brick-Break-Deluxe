@@ -406,9 +406,11 @@ public class UIButtons : MonoBehaviour
 
     public void OnMainMenuPlayPressed()
     {
+        SceneManager.LoadScene(1);
     }
 
     public void OnMainMenuOptionsPressed()
     {
+        OnOptionsButtonPressed();
     }
 }
