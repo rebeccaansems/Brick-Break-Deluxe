@@ -114,7 +114,6 @@ public class UIButtons : MonoBehaviour
     {
         if (player != null)
         {
-            player.GetComponent<Player>().UpdateStats();
             player.GetComponent<Player>().brickBreak = new int[8];
         }
 
@@ -146,7 +145,6 @@ public class UIButtons : MonoBehaviour
             }
             else
             {
-                UpdateHighScores();
                 pauseCanvas.enabled = true;
                 Time.timeScale = 0;
             }
@@ -365,7 +363,7 @@ public class UIButtons : MonoBehaviour
             gameoverCanvas.enabled = true;
         }
 
-        if(pauseButton.GetComponent<Image>() != null)
+        if(pauseButton != null && pauseButton.GetComponent<Image>() != null)
         {
             pauseButton.GetComponent<Image>().color = Color.grey;
         }
