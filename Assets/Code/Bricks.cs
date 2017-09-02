@@ -32,10 +32,7 @@ public class Bricks : MonoBehaviour
     {
         if (collision.collider.tag == "Player" && collidedWithPlayer == false)
         {
-            if (brickType == 1)
-            {
-            }
-            else if (brickType == 2)//Speed brick
+            if (brickType == 2)//Speed brick
             {
                 collision.gameObject.GetComponent<Player>().SpeedBrickModeEnabled();
             }

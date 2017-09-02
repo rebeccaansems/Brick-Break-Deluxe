@@ -161,7 +161,7 @@ public class Player : MonoBehaviour
                 }
             }
 
-            if (nextBallToUnlock != -1)
+            if (nextBallToUnlock != -1 && unlockedBallThresholds.Length > nextBallToUnlock && bricksDestroyed.Length > nextBallToUnlock)
             {
                 unlockBallText.text = bricksDestroyed[nextBallToUnlock] + "/" + unlockedBallThresholds[nextBallToUnlock] + " TO NEXT UNLOCKED BALL";
                 unlockSlider.maxValue = unlockedBallThresholds[nextBallToUnlock];
