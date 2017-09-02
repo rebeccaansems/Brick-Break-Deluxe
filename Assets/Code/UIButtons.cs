@@ -30,7 +30,7 @@ public class UIButtons : MonoBehaviour
 
     private int currentBall;
     private bool canChangeVolume = false;
-    private int[] unlockedBallThresholds = new int[6] { 1, 500, 1000, 2500, 5000, 10000 }, bricksDestroyed;
+    private int[] unlockedBallThresholds = new int[9] { 1, 500, 1000, 2500, 5000, 10000, 600, 1200, 1800 }, bricksDestroyed;
 
     void Start()
     {
@@ -40,7 +40,7 @@ public class UIButtons : MonoBehaviour
             PlayerPrefs.SetInt("CurrentBallSelected", 0);
             PlayerPrefs.SetFloat("SFXVolume", 0.5f);
             PlayerPrefs.SetFloat("MusicVolume", 0.5f);
-            PlayerPrefs.SetString("UnlockedBalls", "ULLLLL");
+            PlayerPrefs.SetString("UnlockedBalls", "ULLLLLLLLL");
         }
 
         sfxVolume = PlayerPrefs.GetFloat("SFXVolume");
@@ -219,8 +219,9 @@ public class UIButtons : MonoBehaviour
 
         if (progressBallSlider != null)
         {
-            bricksDestroyed = new int[6] {1, PlayerPrefs.GetInt("BricksDestroyed0"), PlayerPrefs.GetInt("BricksDestroyed1"),
-            PlayerPrefs.GetInt("BricksDestroyed2"), PlayerPrefs.GetInt("BricksDestroyed3"), PlayerPrefs.GetInt("BricksDestroyed4") };
+            bricksDestroyed = new int[9] {1, PlayerPrefs.GetInt("BricksDestroyed0"), PlayerPrefs.GetInt("BricksDestroyed1"),
+            PlayerPrefs.GetInt("BricksDestroyed2"), PlayerPrefs.GetInt("BricksDestroyed3"), PlayerPrefs.GetInt("BricksDestroyed4"),
+            PlayerPrefs.GetInt("BricksDestroyed5"), PlayerPrefs.GetInt("BricksDestroyed6"), PlayerPrefs.GetInt("BricksDestroyed7")};
 
             progressBallSlider.maxValue = unlockedBallThresholds[currentBall];
             progressBallSlider.value = bricksDestroyed[currentBall];
@@ -256,7 +257,7 @@ public class UIButtons : MonoBehaviour
         PlayerPrefs.SetInt("BricksDestroyed7", 0);
 
         PlayerPrefs.SetInt("CurrentBallSelected", 0);
-        PlayerPrefs.SetString("UnlockedBalls", "ULLLLL");
+        PlayerPrefs.SetString("UnlockedBalls", "ULLLLLLLLL");
 
         PlayerPrefs.SetFloat("PlayerDeathLevel", 5);
 

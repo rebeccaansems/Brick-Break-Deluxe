@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     public Image nextBallToUnlockImage;
     public UIButtons uiButtons;
 
-    private int[] unlockedBallThresholds = new int[5] { 500, 1000, 2500, 5000, 10000 };
+    private int[] unlockedBallThresholds = new int[8] { 500, 1000, 2500, 5000, 10000, 100, 250, 500 };
     private int[] bricksDestroyed;
     private char[] unlockedBallsCharArray;
 
@@ -91,8 +91,9 @@ public class Player : MonoBehaviour
 
         string unlockedBalls = PlayerPrefs.GetString("UnlockedBalls");
         unlockedBallsCharArray = unlockedBalls.ToCharArray();
-        bricksDestroyed = new int[5] { PlayerPrefs.GetInt("BricksDestroyed0"), PlayerPrefs.GetInt("BricksDestroyed1"),
-            PlayerPrefs.GetInt("BricksDestroyed2"), PlayerPrefs.GetInt("BricksDestroyed3"), PlayerPrefs.GetInt("BricksDestroyed4") };
+        bricksDestroyed = new int[8] { PlayerPrefs.GetInt("BricksDestroyed0"), PlayerPrefs.GetInt("BricksDestroyed1"),
+            PlayerPrefs.GetInt("BricksDestroyed2"), PlayerPrefs.GetInt("BricksDestroyed3"), PlayerPrefs.GetInt("BricksDestroyed4"),
+            PlayerPrefs.GetInt("BricksDestroyed5"), PlayerPrefs.GetInt("BricksDestroyed6"), PlayerPrefs.GetInt("BricksDestroyed7")};
 
         if (bricksDestroyed[0] > unlockedBallThresholds[0])
         {
@@ -113,6 +114,18 @@ public class Player : MonoBehaviour
         if (bricksDestroyed[4] > unlockedBallThresholds[4])
         {
             unlockedBallsCharArray[5] = 'U';
+        }
+        if (bricksDestroyed[5] > unlockedBallThresholds[5])
+        {
+            unlockedBallsCharArray[6] = 'U';
+        }
+        if (bricksDestroyed[6] > unlockedBallThresholds[6])
+        {
+            unlockedBallsCharArray[7] = 'U';
+        }
+        if (bricksDestroyed[7] > unlockedBallThresholds[7])
+        {
+            unlockedBallsCharArray[8] = 'U';
         }
 
         unlockedBalls = new string(unlockedBallsCharArray);
